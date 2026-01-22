@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Watercolor Master Lab | 五品牌旗艦配色室</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #8e44ad; /* Sennelier Purple inspired */
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.06);
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- Header & Brand Selection --- */
+        header {
+            background: var(--card-bg);
+            padding: 15px 15px 0 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 10;
+            flex-shrink: 0;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .brand-selector-wrapper {
+            max-width: 500px;
+            margin: 0 auto 15px auto;
+            position: relative;
+        }
+
+        select.brand-select {
+            width: 100%;
+            padding: 12px 40px 12px 20px;
+            font-size: 1.1rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            background: #fff;
+            appearance: none;
+            cursor: pointer;
+            text-align: center;
+            text-align-last: center;
+            transition: border-color 0.3s;
+            color: var(--primary);
+        }
+        
+        select.brand-select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .brand-arrow {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #888;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #888;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            font-weight: 700;
+            background: #eef2f3;
+        }
+
+        /* --- Main Content --- */
+        main {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-section {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            padding: 20px;
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .view-section.active { display: block; opacity: 1; }
+
+        /* --- Mixer Grid --- */
+        .mixer-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.2fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .color-display {
+            flex: 2;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            transition: background 0.4s;
+            padding: 10px;
+        }
+
+        .color-display::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/watercolor.png');
+            opacity: 0.3; pointer-events: none;
+        }
+
+        .code-text { font-family: 'Playfair Display'; font-size: 2rem; font-weight: 700; z-index: 2; line-height: 1; }
+        .name-text { font-size: 0.95rem; margin-top: 5px; z-index: 2; font-weight: 500; }
+        .note-text { font-size: 0.8rem; margin-top: 4px; opacity: 0.8; z-index: 2; }
+
+        .controls {
+            padding: 15px;
+            background: #fff;
+            border-top: 1px solid #f1f1f1;
+        }
+
+        label { display: block; font-size: 0.75rem; color: #95a5a6; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+
+        select.color-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            background: #fdfdfd;
+            font-size: 0.95rem;
+            outline: none;
+            font-family: 'Noto Sans TC';
+        }
+
+        /* --- Reverse Mode --- */
+        .reverse-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .target-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .recipe-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 40px; }
+
+        .recipe-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            border-left: 5px solid transparent;
+        }
+
+        .recipe-visual {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        .mini-swatch {
+            width: 32px; height: 32px; border-radius: 50%;
+            border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .match-score {
+            font-size: 0.8rem; font-weight: bold; color: #27ae60;
+            background: #eafaf1; padding: 4px 8px; border-radius: 4px;
+        }
+
+        .brand-info-text {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Helper Classes --- */
+        .text-light { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .text-dark { color: #2c3e50; }
+
+        /* --- RWD --- */
+        @media (max-width: 768px) {
+            body { height: auto; overflow-y: auto; }
+            main { overflow: visible; }
+            .view-section { position: relative; height: auto; display: none; opacity: 1; }
+            .view-section.active { display: block; }
+            .mixer-container { grid-template-columns: 1fr; gap: 15px; }
+            header { position: sticky; top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-selector-wrapper">
+            <select id="brandSelect" class="brand-select" onchange="changeBrand()">
+                <option value="HLB">Holbein Artists' (好賓)</option>
+                <option value="WN">Winsor & Newton (溫莎牛頓)</option>
+                <option value="SCH">Schmincke Horadam (史明克)</option>
+                <option value="DS">Daniel Smith (丹尼爾史密斯)</option>
+                <option value="SEN">Sennelier L'Aquarelle (申內利爾)</option>
+            </select>
+            <span class="brand-arrow">▼</span>
+        </div>
+        <div id="brandDesc" class="brand-info-text">載入中...</div>
+        <div class="nav-tabs">
+            <div class="tab-btn active" onclick="switchMode('mixer')">Mixer 正向混色</div>
+            <div class="tab-btn" onclick="switchMode('reverse')">Reverse 反向推演</div>
+        </div>
+    </header>
+
+    <main>
+        <section id="view-mixer" class="view-section active">
+            <div class="mixer-container">
+                <div class="card">
+                    <div class="color-display" id="bgA">
+                        <div class="code-text" id="codeA">--</div>
+                        <div class="name-text" id="nameA">Select Color</div>
+                        <div class="note-text" id="noteA"></div>
+                    </div>
+                    <div class="controls">
+                        <label>Pigment A</label>
+                        <select id="selA" class="color-select" onchange="updateMixer('A')"></select>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="color-display" id="bgB">
+                        <div class="code-text" id="codeB">--</div>
+                        <div class="name-text" id="nameB">Select Color</div>
+                        <div class="note-text" id="noteB"></div>
+                    </div>
+                    <div class="controls">
+                        <label>Pigment B</label>
+                        <select id="selB" class="color-select" onchange="updateMixer('B')"></select>
+                    </div>
+                </div>
+
+                <div class="card" style="border-color: var(--primary);">
+                    <div class="color-display" id="bgMix">
+                        <div class="code-text" id="codeMix">MIX</div>
+                        <div class="name-text" id="nameMix">Simulation</div>
+                        <div class="note-text" id="noteMix"></div>
+                    </div>
+                    <div class="controls">
+                        <label>Result Analysis</label>
+                        <div style="font-size:0.9rem; color:#555; line-height:1.5;" id="analysisText">
+                            系統將自動比對當前品牌的資料庫，找出最接近的現有顏色。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-reverse" class="view-section">
+            <div class="reverse-wrapper">
+                <div class="target-card">
+                    <label style="font-size:1rem; margin-bottom:10px; color:var(--primary);">我想調出的目標色 (Target)</label>
+                    <select id="selTarget" class="color-select" onchange="runReverse()" style="font-size:1.1rem; padding:12px;"></select>
+                    
+                    <div style="display:flex; justify-content:center; align-items:center; gap:15px; margin-top:20px;">
+                        <div class="mini-swatch" id="targetSwatch" style="width:50px; height:50px; border:1px solid #ddd;"></div>
+                        <div style="text-align:left;">
+                            <div style="font-weight:700;" id="targetName">---</div>
+                            <div style="font-size:0.85rem; color:#888;">目標標準色</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="font-size:0.8rem; color:#999; text-transform:uppercase; margin-bottom:10px; letter-spacing:1px; text-align:center;">
+                    Recommended Recipes (推薦配方)
+                </div>
+                <div class="recipe-list" id="recipeList">
+                    <div style="text-align:center; padding:30px; color:#aaa;">正在運算最佳配方...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- 1. 資料庫建置 (Penta Database) ---
+        
+        // 分類代碼：R=紅粉, Y=黃橘, G=綠, B=藍, V=紫, E=大地, K=黑白金, P=特殊
+        const CAT_MAP = {
+            "R": "🔴 紅色與粉色系", "Y": "🟡 黃色與橘色系", "G": "🟢 綠色系",
+            "B": "🔵 藍色系", "V": "🟣 紫色系", "E": "🟤 棕色與大地色", "K": "⚫ 黑白與金屬",
+            "P": "✨ 特殊/沉澱色 (Special)"
+        };
+
+        const DB = {
+            "HLB": {
+                name: "Holbein Artists' (好賓)",
+                desc: "日系鮮豔細膩，15ml 管裝標準色。無牛膽汁配方，適合細緻插畫。",
+                data: [
+                    // 紅色系
+                    {c:"W205", e:"Quin. Red", z:"喹吖酮紅", h:"#E82049", g:"R", n:""},
+                    {c:"W206", e:"Pyrrole Rubin", z:"吡咯魯賓紅", h:"#B80F28", g:"R", n:""},
+                    {c:"W207", e:"Pyrrole Red", z:"吡咯紅", h:"#D92121", g:"R", n:"鮮豔標準紅"},
+                    {c:"W208", e:"Perylene Maroon", z:"派瑞林紅", h:"#781F1F", g:"R", n:"暗紅色"},
+                    {c:"W209", e:"Perm. Alizarin Crimson", z:"永固茜素深紅", h:"#C21E36", g:"R", n:""},
+                    {c:"W210", e:"Crimson Lake", z:"胭脂紅", h:"#9E0E25", g:"R", n:"經典常用色"},
+                    {c:"W211", e:"Carmine", z:"洋紅", h:"#D60036", g:"R", n:"偏冷紅"},
+                    {c:"W212", e:"Rose Madder", z:"茜草紅", h:"#E32636", g:"R", n:"傳統色"},
+                    {c:"W213", e:"Opera", z:"歌劇紅", h:"#FF0090", g:"R", n:"螢光色 (不耐光)"},
+                    {c:"W214", e:"Cadmium Red Light", z:"鎘紅 (淺)", h:"#FF3F34", g:"R", n:""},
+                    {c:"W215", e:"Cadmium Red Deep", z:"鎘紅 (深)", h:"#A81C07", g:"R", n:""},
+                    {c:"W216", e:"Cadmium Red Orange", z:"鎘紅橘", h:"#FF5E00", g:"R", n:""},
+                    {c:"W217", e:"Cadmium Red Purple", z:"鎘紅紫", h:"#A52A2A", g:"R", n:""},
+                    {c:"W218", e:"Vermilion", z:"朱紅", h:"#FF4D00", g:"R", n:""},
+                    {c:"W219", e:"Vermilion Hue", z:"硃砂 (色相)", h:"#FF5733", g:"R", n:"替代傳統硃砂"},
+                    {c:"W222", e:"Scarlet Lake", z:"猩紅", h:"#FF2400", g:"R", n:""},
+                    {c:"W225", e:"Brilliant Pink", z:"亮粉紅", h:"#FFB6C1", g:"R", n:"含白不透明"},
+                    {c:"W226", e:"Shell Pink", z:"貝殼粉", h:"#FFDAB9", g:"R", n:"含白不透明"},
+                    {c:"W227", e:"Quin. Scarlet", z:"喹吖酮猩紅", h:"#F54638", g:"R", n:""},
+                    // 黃橘色系
+                    {c:"W230", e:"Naples Yellow", z:"拿坡里黃", h:"#FADA5E", g:"Y", n:""},
+                    {c:"W231", e:"Jaune Brillant #1", z:"亮黃 1號", h:"#FFF8DC", g:"Y", n:"膚色常用"},
+                    {c:"W232", e:"Jaune Brillant #2", z:"亮黃 2號", h:"#FFE4B5", g:"Y", n:"膚色常用"},
+                    {c:"W233", e:"Lemon Yellow", z:"檸檬黃", h:"#FFF44F", g:"Y", n:""},
+                    {c:"W234", e:"Yellow Ochre", z:"土黃", h:"#CC9933", g:"Y", n:"必備大地色"},
+                    {c:"W235", e:"Perm. Yellow Lemon", z:"永固檸檬黃", h:"#F7E623", g:"Y", n:""},
+                    {c:"W236", e:"Perm. Yellow Light", z:"永固淺黃", h:"#F9D71C", g:"Y", n:""},
+                    {c:"W237", e:"Perm. Yellow Deep", z:"永固深黃", h:"#FDC70F", g:"Y", n:""},
+                    {c:"W238", e:"Perm. Yellow Orange", z:"永固橘黃", h:"#FFA500", g:"Y", n:""},
+                    {c:"W240", e:"Cad. Yellow Lemon", z:"鎘檸檬黃", h:"#F3E500", g:"Y", n:""},
+                    {c:"W241", e:"Cad. Yellow Pale", z:"鎘淡黃", h:"#FFFACD", g:"Y", n:""},
+                    {c:"W242", e:"Cad. Yellow Light", z:"鎘淺黃", h:"#FFEB3B", g:"Y", n:""},
+                    {c:"W243", e:"Cad. Yellow Deep", z:"鎘深黃", h:"#FBC02D", g:"Y", n:""},
+                    {c:"W244", e:"Cad. Yellow Orange", z:"鎘橘黃", h:"#FF9800", g:"Y", n:""},
+                    {c:"W246", e:"Greenish Yellow", z:"青黃", h:"#DFFF00", g:"Y", n:""},
+                    {c:"W247", e:"Brilliant Orange", z:"亮橘色", h:"#FF8C00", g:"Y", n:""},
+                    {c:"W248", e:"Gamboge Nova", z:"藤黃 (新)", h:"#E49B0F", g:"Y", n:""},
+                    {c:"W249", e:"Isoindolinone Yellow", z:"異吲哚啉酮深黃", h:"#EBA832", g:"Y", n:""},
+                    {c:"W250", e:"Imidazolone Yellow", z:"咪唑酮黃", h:"#FFD700", g:"Y", n:"高透明度"},
+                    {c:"W251", e:"Imidazolone Lemon", z:"咪唑酮檸檬黃", h:"#FDE910", g:"Y", n:"高透明度"},
+                    {c:"W342", e:"Quin. Gold", z:"喹吖酮金", h:"#C58F00", g:"Y", n:"常用混色金黃"},
+                    // 綠色系
+                    {c:"W260", e:"Viridian", z:"翠綠", h:"#007F5C", g:"G", n:"沉澱色"},
+                    {c:"W261", e:"Viridian Hue", z:"翠綠 (色相)", h:"#009E73", g:"G", n:""},
+                    {c:"W262", e:"Hooker's Green", z:"虎克綠", h:"#3B7A57", g:"G", n:"風景常用"},
+                    {c:"W263", e:"Cobalt Green", z:"鈷綠", h:"#3D9970", g:"G", n:"沉澱色"},
+                    {c:"W264", e:"Emerald Green Nova", z:"寶石翠綠", h:"#50C878", g:"G", n:""},
+                    {c:"W265", e:"Terre Verte", z:"綠土", h:"#DEE5CE", g:"G", n:"透明度高"},
+                    {c:"W266", e:"Perm. Green #1", z:"永固綠 1號", h:"#00A86B", g:"G", n:"鮮豔嫩綠"},
+                    {c:"W267", e:"Perm. Green #2", z:"永固綠 2號", h:"#008000", g:"G", n:"中綠色"},
+                    {c:"W269", e:"Cad. Green Pale", z:"鎘綠 (淡)", h:"#98FB98", g:"G", n:""},
+                    {c:"W270", e:"Cad. Green Deep", z:"鎘綠 (深)", h:"#2E8B57", g:"G", n:""},
+                    {c:"W271", e:"Compose Green", z:"複合綠", h:"#A9DFBF", g:"G", n:"偏粉彩"},
+                    {c:"W272", e:"Compose Green #2", z:"複合綠 2號", h:"#76D7C4", g:"G", n:"偏藍綠"},
+                    {c:"W274", e:"Olive Green", z:"橄欖綠", h:"#808000", g:"G", n:""},
+                    {c:"W275", e:"Sap Green", z:"樹汁綠", h:"#477024", g:"G", n:"寫生必備"},
+                    {c:"W277", e:"Leaf Green", z:"葉綠", h:"#7BA05B", g:"G", n:"鮮亮色"},
+                    {c:"W278", e:"Bamboo Green", z:"竹綠", h:"#006400", g:"G", n:"單一色素"},
+                    {c:"W279", e:"Shadow Green", z:"影綠", h:"#2F4F4F", g:"G", n:"深邃陰影"},
+                    // 藍色系
+                    {c:"W290", e:"Cobalt Blue", z:"鈷藍", h:"#0047AB", g:"B", n:"經典沉澱"},
+                    {c:"W291", e:"Cobalt Blue Hue", z:"鈷藍 (色相)", h:"#4169E1", g:"B", n:""},
+                    {c:"W292", e:"Cerulean Blue", z:"蔚藍 (天藍)", h:"#2A52BE", g:"B", n:"沉澱色"},
+                    {c:"W293", e:"Ultramarine Light", z:"群青 (淺)", h:"#4166F5", g:"B", n:""},
+                    {c:"W294", e:"Ultramarine Deep", z:"群青 (深)", h:"#120A8F", g:"B", n:"經典常用"},
+                    {c:"W295", e:"Verditer Blue", z:"靛青 (石青)", h:"#436B95", g:"B", n:"不透明"},
+                    {c:"W296", e:"Compose Blue", z:"複合藍", h:"#A4DDED", g:"B", n:"偏粉彩"},
+                    {c:"W297", e:"Prussian Blue", z:"普魯士藍", h:"#003153", g:"B", n:"染色力強"},
+                    {c:"W298", e:"Indigo", z:"靛藍", h:"#00416A", g:"B", n:"深藍黑"},
+                    {c:"W299", e:"Turquoise Blue", z:"土耳其藍", h:"#00CED1", g:"B", n:""},
+                    {c:"W301", e:"Peacock Blue", z:"孔雀藍", h:"#008080", g:"B", n:"不耐光"},
+                    {c:"W302", e:"Marine Blue", z:"海藍", h:"#005F69", g:"B", n:"藍綠調"},
+                    {c:"W303", e:"Royal Blue", z:"皇家藍", h:"#4169E1", g:"B", n:""},
+                    {c:"W304", e:"Horizon Blue", z:"地平線藍", h:"#76D7EA", g:"B", n:"含白"},
+                    {c:"W305", e:"Manganese Blue Nova", z:"錳藍 (新)", h:"#008ECC", g:"B", n:"顆粒感"},
+                    {c:"W307", e:"Phthalo Blue (Y)", z:"酞菁藍 (黃口)", h:"#0088CC", g:"B", n:"偏青"},
+                    {c:"W308", e:"Phthalo Blue (R)", z:"酞菁藍 (紅口)", h:"#0044CC", g:"B", n:"偏暖"},
+                    // 紫色系
+                    {c:"W310", e:"Cobalt Violet Lt", z:"鈷紫 (淺)", h:"#9966CC", g:"V", n:"昂貴沉澱"},
+                    {c:"W312", e:"Mineral Violet", z:"礦物紫", h:"#635147", g:"V", n:"沉澱色"},
+                    {c:"W313", e:"Mars Violet", z:"瑪爾斯紫", h:"#553535", g:"V", n:"偏紅棕"},
+                    {c:"W315", e:"Permanent Violet", z:"永固紫", h:"#7F00FF", g:"V", n:"鮮豔標準"},
+                    {c:"W317", e:"Lilac", z:"紫丁香", h:"#C8A2C8", g:"V", n:"含白"},
+                    {c:"W319", e:"Quin. Magenta", z:"喹吖酮洋紅", h:"#8E3A59", g:"V", n:"Rose Violet"},
+                    {c:"W320", e:"Quin. Violet", z:"喹吖酮紫", h:"#800080", g:"V", n:""},
+                    {c:"W370", e:"Bright Rose", z:"亮玫瑰", h:"#FF007F", g:"V", n:"螢光"},
+                    {c:"W375", e:"Bright Violet", z:"亮紫", h:"#BF00FF", g:"V", n:"螢光"},
+                    // 棕色大地
+                    {c:"W330", e:"Light Red", z:"淡紅", h:"#F08080", g:"E", n:"偏紅棕"},
+                    {c:"W331", e:"Raw Umber", z:"生褐", h:"#826644", g:"E", n:"偏綠/冷棕"},
+                    {c:"W332", e:"Raw Sienna", z:"生赭", h:"#D89656", g:"E", n:"偏黃棕"},
+                    {c:"W333", e:"Burnt Umber", z:"熟褐", h:"#8A3324", g:"E", n:"深咖啡"},
+                    {c:"W334", e:"Burnt Sienna", z:"熟赭", h:"#E97451", g:"E", n:"暖棕色"},
+                    {c:"W335", e:"Indian Red", z:"印度紅", h:"#CD5C5C", g:"E", n:"不透明"},
+                    {c:"W336", e:"Sepia", z:"賽皮亞", h:"#704214", g:"E", n:"復古深棕"},
+                    {c:"W339", e:"Vandyke Brown", z:"凡戴克棕", h:"#664228", g:"E", n:""},
+                    {c:"W341", e:"Imidazolone Brown", z:"咪唑酮棕", h:"#964B00", g:"E", n:"透明棕"},
+                    // 黑白
+                    {c:"W201", e:"Chinese White", z:"中國白", h:"#F8F9FA", g:"K", n:"鋅白半透明"},
+                    {c:"W203", e:"Titanium White", z:"鈦白", h:"#FFFFFF", g:"K", n:"不透明"},
+                    {c:"W338", e:"Ivory Black", z:"象牙黑", h:"#232b2b", g:"K", n:"暖黑"},
+                    {c:"W351", e:"Yellow Grey", z:"黃灰", h:"#CFCFC4", g:"K", n:""},
+                    {c:"W353", e:"Grey of Grey", z:"灰中灰", h:"#B2BEB5", g:"K", n:""},
+                    {c:"W355", e:"Davy's Grey", z:"戴維斯灰", h:"#555D50", g:"K", n:"偏綠灰"},
+                    {c:"W356", e:"Payne's Grey", z:"派恩灰", h:"#536878", g:"K", n:"偏藍冷灰"},
+                    {c:"W390", e:"Gold", z:"金色", h:"#D4AF37", g:"K", n:""},
+                    {c:"W391", e:"Silver", z:"銀色", h:"#C0C0C0", g:"K", n:""}
+                ]
+            },
+            "WN": {
+                name: "Winsor & Newton (溫莎牛頓)",
+                desc: "專家級透明水彩 (Professional)。含無鎘系列，色粉含量極高。管身標示 S1-S4 等級。",
+                data: [
+                    // 黃色與橘色系
+                    {c:"347", e:"Lemon Yellow", z:"檸檬黃 (鈦酸鎳)", h:"#F7F252", g:"Y", n:"常用冷黃"},
+                    {c:"722", e:"Winsor Lemon", z:"溫莎檸檬黃", h:"#FFF32B", g:"Y", n:"鮮豔冷黃"},
+                    {c:"730", e:"Winsor Yellow", z:"溫莎黃", h:"#FFD500", g:"Y", n:"標準中黃/透明"},
+                    {c:"731", e:"Winsor Yellow Deep", z:"溫莎深黃", h:"#FFB800", g:"Y", n:""},
+                    {c:"016", e:"Aureolin", z:"奧瑞林黃", h:"#FDEE00", g:"Y", n:"傳統色"},
+                    {c:"653", e:"Transparent Yellow", z:"透明黃", h:"#FFCC00", g:"Y", n:""},
+                    {c:"267", e:"New Gamboge", z:"新藤黃", h:"#FFB300", g:"Y", n:"寫生常用"},
+                    {c:"319", e:"Indian Yellow", z:"印度黃", h:"#E3A857", g:"Y", n:"濃郁暖黃"},
+                    {c:"108", e:"Cadmium Yellow", z:"鎘黃", h:"#FFDF00", g:"Y", n:"S4/不透明"},
+                    {c:"111", e:"Cad. Yellow Deep", z:"鎘深黃", h:"#FFC200", g:"Y", n:"S4"},
+                    {c:"118", e:"Cad. Yellow Pale", z:"鎘淡黃", h:"#FFFACD", g:"Y", n:"S4"},
+                    {c:"724", e:"Winsor Orange", z:"溫莎橘", h:"#FF7F00", g:"Y", n:"鮮豔橘"},
+                    {c:"723", e:"Winsor Orange (Red)", z:"溫莎紅橘", h:"#FF6347", g:"Y", n:""},
+                    {c:"089", e:"Cadmium Orange", z:"鎘橘", h:"#ED872D", g:"Y", n:"S4"},
+                    // 紅色與粉色系
+                    {c:"726", e:"Winsor Red", z:"溫莎紅", h:"#E30022", g:"R", n:"鮮豔標準紅"},
+                    {c:"725", e:"Winsor Red Deep", z:"溫莎深紅", h:"#C71585", g:"R", n:""},
+                    {c:"502", e:"Permanent Rose", z:"永固玫瑰紅", h:"#E0115F", g:"R", n:"調紫必備/冷紅"},
+                    {c:"466", e:"Perm. Alizarin Crimson", z:"永固茜素深紅", h:"#DC143C", g:"R", n:"耐光佳"},
+                    {c:"004", e:"Alizarin Crimson", z:"茜素深紅", h:"#E32636", g:"R", n:"傳統色"},
+                    {c:"603", e:"Scarlet Lake", z:"猩紅", h:"#FF2400", g:"R", n:""},
+                    {c:"479", e:"Permanent Carmine", z:"永固洋紅", h:"#960018", g:"R", n:""},
+                    {c:"576", e:"Rose Doré", z:"玫瑰金 (紅赭)", h:"#D65D54", g:"R", n:"偏橘粉紅"},
+                    {c:"448", e:"Opera Rose", z:"歌劇玫瑰紅", h:"#FF00FF", g:"R", n:"螢光色/極鮮豔"},
+                    {c:"094", e:"Cadmium Red", z:"鎘紅", h:"#D9381E", g:"R", n:"S4/不透明"},
+                    {c:"097", e:"Cad. Red Deep", z:"鎘深紅", h:"#A81C07", g:"R", n:"S4"},
+                    {c:"548", e:"Quinacridone Red", z:"喹吖酮紅", h:"#E60026", g:"R", n:""},
+                    {c:"460", e:"Perylene Maroon", z:"派瑞林紅", h:"#800000", g:"R", n:"暗紅"},
+                    // 藍色系
+                    {c:"263", e:"French Ultramarine", z:"法國群青", h:"#0033CC", g:"B", n:"經典沉澱/偏暖"},
+                    {c:"707", e:"Winsor Blue (Green)", z:"溫莎藍 (綠口)", h:"#006699", g:"B", n:"染色強"},
+                    {c:"709", e:"Winsor Blue (Red)", z:"溫莎藍 (紅口)", h:"#191970", g:"B", n:"偏紫深藍"},
+                    {c:"178", e:"Cobalt Blue", z:"鈷藍", h:"#0047AB", g:"B", n:"S4/沉澱色"},
+                    {c:"180", e:"Cobalt Blue Deep", z:"深鈷藍", h:"#003399", g:"B", n:""},
+                    {c:"137", e:"Cerulean Blue", z:"蔚藍 (天藍)", h:"#2A52BE", g:"B", n:"顆粒感"},
+                    {c:"140", e:"Cerulean Blue (Red)", z:"蔚藍 (紅口)", h:"#3355CC", g:"B", n:""},
+                    {c:"538", e:"Prussian Blue", z:"普魯士藍", h:"#003153", g:"B", n:"深邃/染色強"},
+                    {c:"322", e:"Indigo", z:"靛藍", h:"#283545", g:"B", n:"深藍黑"},
+                    {c:"321", e:"Indanthrene Blue", z:"陰丹士林藍", h:"#101D6B", g:"B", n:"現代深藍"},
+                    {c:"190", e:"Cobalt Turquoise", z:"鈷土耳其藍", h:"#00CED1", g:"B", n:""},
+                    {c:"191", e:"Cobalt Turq. Light", z:"淺鈷土耳其藍", h:"#40E0D0", g:"B", n:"亮麗湖水色"},
+                    {c:"010", e:"Antwerp Blue", z:"安特衛普藍", h:"#2C4F6B", g:"B", n:"淡普魯士藍"},
+                    // 綠色系 (Naples Yellow 歸類於 Yellow)
+                    {c:"719", e:"Winsor Green (Blue)", z:"溫莎綠 (藍口)", h:"#00755E", g:"G", n:"標準 Phthalo"},
+                    {c:"721", e:"Winsor Green (Yellow)", z:"溫莎綠 (黃口)", h:"#40826D", g:"G", n:"較暖翠綠"},
+                    {c:"503", e:"Perm. Sap Green", z:"永固樹汁綠", h:"#477024", g:"G", n:"寫生必備"},
+                    {c:"692", e:"Viridian", z:"翠綠", h:"#007F5C", g:"G", n:"顆粒感/較淡"},
+                    {c:"311", e:"Hooker's Green", z:"虎克綠", h:"#49796B", g:"G", n:"經典混合"},
+                    {c:"447", e:"Olive Green", z:"橄欖綠", h:"#808000", g:"G", n:""},
+                    {c:"637", e:"Terre Verte", z:"綠土", h:"#DEE5CE", g:"G", n:"極淡透明"},
+                    {c:"459", e:"Oxide of Chromium", z:"氧化鉻綠", h:"#556B2F", g:"G", n:"不透明/沈穩"},
+                    {c:"184", e:"Cobalt Green", z:"鈷綠", h:"#3D9970", g:"G", n:""},
+                    {c:"422", e:"Naples Yellow", z:"拿坡里黃", h:"#FADA5E", g:"Y", n:"常用於調綠/膚"},
+                    // 紫色系
+                    {c:"733", e:"Winsor Violet", z:"溫莎紫", h:"#4B0082", g:"V", n:"強力染色"},
+                    {c:"491", e:"Permanent Mauve", z:"永固紫紅", h:"#AF4F91", g:"V", n:""},
+                    {c:"192", e:"Cobalt Violet", z:"鈷紫", h:"#915C83", g:"V", n:"極貴/顆粒"},
+                    {c:"403", e:"Purple Madder", z:"茜草紫", h:"#553535", g:"V", n:""},
+                    {c:"672", e:"Ultramarine Violet", z:"群青紫", h:"#5C5CFF", g:"V", n:"顆粒感"},
+                    // 大地棕色
+                    {c:"744", e:"Yellow Ochre", z:"土黃", h:"#C59B45", g:"E", n:"基礎必備"},
+                    {c:"552", e:"Raw Sienna", z:"生赭", h:"#D89656", g:"E", n:"透明/偏橘"},
+                    {c:"074", e:"Burnt Sienna", z:"熟赭", h:"#E97451", g:"E", n:"經典紅棕"},
+                    {c:"076", e:"Burnt Umber", z:"熟褐", h:"#8A3324", g:"E", n:"深咖啡"},
+                    {c:"554", e:"Raw Umber", z:"生褐", h:"#826644", g:"E", n:"冷調黃棕"},
+                    {c:"362", e:"Light Red", z:"淡紅", h:"#F08080", g:"E", n:"偏橘紅土色"},
+                    {c:"317", e:"Indian Red", z:"印度紅", h:"#CD5C5C", g:"E", n:"不透明紅棕"},
+                    {c:"609", e:"Sepia", z:"賽皮亞", h:"#704214", g:"E", n:"烏賊黑"},
+                    {c:"678", e:"Venetian Red", z:"威尼斯紅", h:"#C80815", g:"E", n:""},
+                    {c:"507", e:"Perylene Violet", z:"派瑞林紫", h:"#502020", g:"E", n:"深紫棕"},
+                    {c:"395", e:"Magnesium Brown", z:"鎂棕", h:"#964B00", g:"E", n:"獨家/沉澱"},
+                    {c:"528", e:"Potter's Pink", z:"波特粉", h:"#E8C3BA", g:"E", n:"強顆粒感"},
+                    // 黑白
+                    {c:"331", e:"Ivory Black", z:"象牙黑", h:"#292421", g:"K", n:"暖黑"},
+                    {c:"337", e:"Lamp Black", z:"燈黑", h:"#111111", g:"K", n:"冷黑不透明"},
+                    {c:"465", e:"Payne's Gray", z:"派恩灰", h:"#536878", g:"K", n:"偏藍冷灰"},
+                    {c:"430", e:"Neutral Tint", z:"中性灰", h:"#505050", g:"K", n:"純灰調暗"},
+                    {c:"217", e:"Davy's Gray", z:"戴維斯灰", h:"#555D50", g:"K", n:"偏綠淡灰"},
+                    {c:"150", e:"Chinese White", z:"中國白", h:"#F8F9FA", g:"K", n:"鋅白/半透明"},
+                    {c:"644", e:"Titanium White", z:"鈦白", h:"#FFFFFF", g:"K", n:"不透明"}
+                ]
+            },
+            "SCH": {
+                name: "Schmincke Horadam (史明克)",
+                desc: "貓頭鷹專家級 (Horadam)。具極佳復溶性。含超級層析色 (Super Granulation)。",
+                data: [
+                    // 黃橘色 200系列
+                    {c:"209", e:"Transparent Yellow", z:"透明黃", h:"#F4D925", g:"Y", n:"極透明"},
+                    {c:"215", e:"Lemon Yellow", z:"檸檬黃", h:"#F3E836", g:"Y", n:"標準冷黃"},
+                    {c:"216", e:"Pure Yellow", z:"純黃", h:"#FFD700", g:"Y", n:"鮮豔中黃"},
+                    {c:"217", e:"Quin. Gold Hue", z:"喹吖酮金", h:"#E8A317", g:"Y", n:"暖金黃色"},
+                    {c:"218", e:"Transparent Orange", z:"透明橘", h:"#FF8C00", g:"Y", n:"鮮亮透明"},
+                    {c:"224", e:"Cad. Yellow Light", z:"鎘淺黃", h:"#FFF200", g:"Y", n:"不透明"},
+                    {c:"225", e:"Cad. Yellow Deep", z:"鎘深黃", h:"#FFB800", g:"Y", n:"不透明"},
+                    {c:"229", e:"Naples Yellow", z:"拿坡里黃", h:"#FADA5E", g:"Y", n:"含白/遮蓋"},
+                    {c:"230", e:"Naples Yellow Red", z:"拿坡里紅黃", h:"#FFDEAD", g:"Y", n:"膚色常用"},
+                    // 紅粉色 300系列
+                    {c:"341", e:"Geranium Red", z:"天竺葵紅", h:"#E32E30", g:"R", n:"鮮豔冷紅"},
+                    {c:"342", e:"Vermilion Light", z:"淺硃砂", h:"#FF4D00", g:"R", n:""},
+                    {c:"349", e:"Cad. Red Light", z:"鎘淺紅", h:"#FF2400", g:"R", n:"不透明"},
+                    {c:"352", e:"Magenta", z:"洋紅", h:"#FF00FF", g:"R", n:"調紫必備"},
+                    {c:"353", e:"Perm. Carmine", z:"永固洋紅", h:"#C21E36", g:"R", n:"標準紅"},
+                    {c:"354", e:"Madder Red Dark", z:"深茜草紅", h:"#800000", g:"R", n:"經典深紅"},
+                    {c:"363", e:"Scarlet Red", z:"猩紅", h:"#FF2400", g:"R", n:""},
+                    {c:"366", e:"Perylene Maroon", z:"派瑞林紅", h:"#781F1F", g:"R", n:"暗紅深邃"},
+                    {c:"351", e:"Ruby Red", z:"紅寶石紅", h:"#9B111E", g:"R", n:""},
+                    {c:"369", e:"Quin. Magenta", z:"喹吖酮洋紅", h:"#8E3A59", g:"R", n:"耐光紫紅"},
+                    // 紫藍色 400系列
+                    {c:"474", e:"Manganese Violet", z:"錳紫", h:"#9932CC", g:"V", n:"顆粒感"},
+                    {c:"475", e:"Helio Turquoise", z:"太陽土耳其藍", h:"#00CED1", g:"B", n:"極鮮豔"},
+                    {c:"495", e:"Ultramarine Violet", z:"群青紫", h:"#5C5CFF", g:"V", n:""},
+                    {c:"479", e:"Helio Cerulean", z:"太陽蔚藍", h:"#2A52BE", g:"B", n:"標準天藍"},
+                    {c:"480", e:"Mountain Blue", z:"山藍", h:"#76D7EA", g:"B", n:"含白"},
+                    {c:"481", e:"Cerulean Blue Tone", z:"蔚藍色調", h:"#3355CC", g:"B", n:""},
+                    {c:"482", e:"Delft Blue", z:"台夫特藍", h:"#2A3855", g:"B", n:"深靛藍"},
+                    {c:"484", e:"Phthalo Blue", z:"酞菁藍", h:"#000F89", g:"B", n:"染色力強"},
+                    {c:"485", e:"Indigo", z:"靛藍", h:"#283545", g:"B", n:"深藍黑"},
+                    {c:"492", e:"Prussian Blue", z:"普魯士藍", h:"#003153", g:"B", n:""},
+                    {c:"494", e:"Ultramarine Finest", z:"極致群青", h:"#3A4B9F", g:"B", n:"招牌/無沉澱"},
+                    {c:"493", e:"French Ultramarine", z:"法國群青", h:"#120A8F", g:"B", n:"顆粒沉澱"},
+                    // 綠色 500系列
+                    {c:"509", e:"Cobalt Turquoise", z:"鈷土耳其綠", h:"#00CED1", g:"G", n:"沉澱色"},
+                    {c:"514", e:"Helio Green", z:"太陽綠", h:"#00A86B", g:"G", n:"鮮豔標準綠"},
+                    {c:"519", e:"Phthalo Green", z:"酞菁綠", h:"#007F5C", g:"G", n:""},
+                    {c:"524", e:"May Green", z:"五月綠", h:"#7CBC42", g:"G", n:"新葉神器"},
+                    {c:"525", e:"Olive Green Yellow", z:"橄欖黃綠", h:"#808000", g:"G", n:""},
+                    {c:"530", e:"Sap Green", z:"樹汁綠", h:"#477024", g:"G", n:"寫生必備"},
+                    {c:"533", e:"Cobalt Green Dark", z:"深鈷綠", h:"#3D9970", g:"G", n:""},
+                    {c:"534", e:"Perm. Green Olive", z:"永固橄欖綠", h:"#556B2F", g:"G", n:""},
+                    {c:"512", e:"Chromium Oxide Green", z:"氧化鉻綠", h:"#2E8B57", g:"G", n:"不透明"},
+                    // 大地 600系列
+                    {c:"645", e:"Caput Mortuum", z:"骷髏紅", h:"#592720", g:"E", n:"沉澱紅棕"},
+                    {c:"649", e:"English Venetian Red", z:"英國威尼斯紅", h:"#CD5C5C", g:"E", n:"不透明"},
+                    {c:"655", e:"Yellow Ochre", z:"土黃", h:"#C59B45", g:"E", n:""},
+                    {c:"661", e:"Burnt Sienna", z:"熟赭", h:"#E97451", g:"E", n:"經典棕色"},
+                    {c:"663", e:"Sepia Brown", z:"賽皮亞", h:"#4B3621", g:"E", n:"暖調深棕"},
+                    {c:"668", e:"Burnt Umber", z:"熟褐", h:"#8A3324", g:"E", n:"冷調深咖"},
+                    {c:"669", e:"Vandyke Brown", z:"凡戴克棕", h:"#664228", g:"E", n:""},
+                    {c:"670", e:"Madder Brown", z:"茜草棕", h:"#960018", g:"E", n:"紅棕色"},
+                    // 黑白金 700/800
+                    {c:"101", e:"Titanium White", z:"鈦白", h:"#FFFFFF", g:"K", n:"不透明"},
+                    {c:"102", e:"Zinc White", z:"鋅白", h:"#F8F9FA", g:"K", n:"半透明"},
+                    {c:"780", e:"Ivory Black", z:"象牙黑", h:"#292421", g:"K", n:""},
+                    {c:"782", e:"Neutral Tint", z:"中性灰", h:"#505050", g:"K", n:"偏紫灰"},
+                    {c:"787", e:"Payne's Grey Bluish", z:"派恩灰(藍)", h:"#536878", g:"K", n:"冷調灰"},
+                    {c:"893", e:"Gold", z:"金色", h:"#D4AF37", g:"K", n:""},
+                    {c:"894", e:"Silver", z:"銀色", h:"#C0C0C0", g:"K", n:""},
+                    // 超級層析系列 (Super Granulation)
+                    {c:"915", e:"Galaxy Black", z:"銀河黑", h:"#2C2C2C", g:"K", n:"層析色"},
+                    {c:"954", e:"Deep Sea Green", z:"深海綠", h:"#2E4A45", g:"G", n:"層析色"},
+                    {c:"963", e:"Glacier Turquoise", z:"冰川土耳其", h:"#5E9CA0", g:"B", n:"層析色"}
+                ]
+            },
+            "DS": {
+                name: "Daniel Smith (DS)",
+                desc: "美國品牌，色系龐大(266色)。以 Primatek 礦物色、沉澱色及高擴散性聞名。",
+                data: [
+                    // Primatek / 獨家沉澱 (Special)
+                    {c:"006", e:"Buff Titanium", z:"鈦米黃", h:"#F5E6C7", g:"P", n:"奶油土色/顆粒"},
+                    {c:"056", e:"Moonglow", z:"月光紫", h:"#4A4056", g:"P", n:"三色分離/招牌"},
+                    {c:"104", e:"Shadow Violet", z:"暗影紫", h:"#3E2F40", g:"P", n:"偏黑紫/影子"},
+                    {c:"223", e:"Undersea Green", z:"海底綠", h:"#384534", g:"P", n:"墨綠+橘褐"},
+                    {c:"050", e:"Lunar Black", z:"月球黑", h:"#1C1C1C", g:"P", n:"磁性沉澱"},
+                    {c:"182", e:"Serpentine Gen.", z:"蛇紋石綠", h:"#5E7D58", g:"P", n:"綠帶紅棕"},
+                    {c:"204", e:"Hematite Gen.", z:"赤鐵礦", h:"#3E322E", g:"P", n:"黑帶紅棕"},
+                    {c:"138", e:"Lapis Lazuli Gen.", z:"青金石", h:"#26619C", g:"P", n:"自然藍/淡雅"},
+                    {c:"180", e:"Sodalite Gen.", z:"方鈉石", h:"#232C3F", g:"P", n:"深藍黑"},
+                    {c:"235", e:"Jadeite Gen.", z:"翡翠綠", h:"#006A4E", g:"P", n:"濃郁礦物綠"},
+                    {c:"161", e:"Goethite", z:"針鐵礦", h:"#8B5A2B", g:"P", n:"顆粒土黃"},
+                    {c:"103", e:"Sleeping Beauty", z:"睡美人綠松石", h:"#40E0D0", g:"P", n:"真實綠松石"},
+                    // 黃橘色
+                    {c:"039", e:"Hansa Yellow Lt", z:"漢莎淺黃", h:"#F7F252", g:"Y", n:"檸檬黃"},
+                    {c:"040", e:"Hansa Yellow Med", z:"漢莎中黃", h:"#FFD700", g:"Y", n:"標準黃"},
+                    {c:"041", e:"Hansa Yellow Deep", z:"漢莎深黃", h:"#FFB300", g:"Y", n:"暖黃"},
+                    {c:"058", e:"New Gamboge", z:"新藤黃", h:"#E49B0F", g:"Y", n:"暖橘黃"},
+                    {c:"142", e:"Aussie Red Gold", z:"澳洲紅金", h:"#E68A00", g:"Y", n:"濃郁橘金"},
+                    {c:"150", e:"Quin. Gold", z:"喹吖酮金", h:"#C58F00", g:"Y", n:"調和色/金黃"},
+                    {c:"093", e:"Quin. Sienna", z:"喹吖酮赭", h:"#C06E36", g:"Y", n:"亮棕色"},
+                    {c:"086", e:"Quin. Burnt Orange", z:"喹吖酮焦橘", h:"#A0522D", g:"Y", n:"紅棕色"},
+                    // 紅粉色
+                    {c:"084", e:"Pyrrol Red", z:"吡咯紅", h:"#E30022", g:"R", n:"鮮豔大紅"},
+                    {c:"085", e:"Pyrrol Scarlet", z:"吡咯猩紅", h:"#FF2400", g:"R", n:"偏橘紅"},
+                    {c:"003", e:"Alizarin Crimson", z:"茜素深紅", h:"#E32636", g:"R", n:"傳統色"},
+                    {c:"005", e:"Anthraquinoid Red", z:"蒽醌紅", h:"#781818", g:"R", n:"冷調深紅"},
+                    {c:"197", e:"Perylene Red", z:"派瑞林紅", h:"#D92121", g:"R", n:"亮紅"},
+                    {c:"091", e:"Quin. Red", z:"喹吖酮紅", h:"#E60026", g:"R", n:"標準鮮紅"},
+                    {c:"092", e:"Quin. Rose", z:"喹吖酮玫瑰", h:"#FF0090", g:"R", n:"冷調/調紫"},
+                    {c:"026", e:"Quin. Coral", z:"喹吖酮珊瑚", h:"#FF7F50", g:"R", n:"珊瑚橘粉"},
+                    // 藍紫
+                    {c:"034", e:"French Ultramarine", z:"法國群青", h:"#0033CC", g:"B", n:"顆粒明顯"},
+                    {c:"077", e:"Phthalo Blue (GS)", z:"酞菁藍(綠)", h:"#006699", g:"B", n:"標準冷藍"},
+                    {c:"078", e:"Phthalo Blue (RS)", z:"酞菁藍(紅)", h:"#191970", g:"B", n:"暖藍"},
+                    {c:"049", e:"Manganese Blue Hue", z:"錳藍", h:"#00CED1", g:"B", n:"沉澱天空藍"},
+                    {c:"021", e:"Cerulean Blue Chr", z:"蔚藍(鉻)", h:"#2A52BE", g:"B", n:"不透明/沉澱"},
+                    {c:"043", e:"Indanthrone Blue", z:"陰丹士林藍", h:"#101D6B", g:"B", n:"深藍"},
+                    {c:"048", e:"Lavender", z:"薰衣草紫", h:"#B57EDC", g:"V", n:"含白/粉紫"},
+                    {c:"196", e:"Wisteria", z:"紫藤色", h:"#C9A0DC", g:"V", n:"偏紅粉紫"},
+                    // 綠色
+                    {c:"099", e:"Sap Green", z:"樹汁綠", h:"#477024", g:"G", n:"鮮豔標準"},
+                    {c:"076", e:"Phthalo Green (BS)", z:"酞菁綠(藍)", h:"#007F5C", g:"G", n:"染色強"},
+                    {c:"096", e:"Rich Green Gold", z:"豐富綠金", h:"#808000", g:"G", n:"橄欖金黃"},
+                    {c:"064", e:"Perylene Green", z:"派瑞林綠", h:"#013220", g:"G", n:"極深綠"},
+                    {c:"016", e:"Cascade Green", z:"瀑布綠", h:"#2F4F4F", g:"G", n:"分離藍色"},
+                    // 大地
+                    {c:"010", e:"Burnt Sienna", z:"熟赭", h:"#E97451", g:"E", n:"基礎棕"},
+                    {c:"044", e:"Italian Burnt Sienna", z:"義大利熟赭", h:"#D65D54", g:"E", n:"偏紅"},
+                    {c:"074", e:"Raw Umber", z:"生褐", h:"#826644", g:"E", n:"冷調深棕"},
+                    {c:"052", e:"Monte Amiata Nat Sienna", z:"蒙特阿米亞塔赭", h:"#E6BE8A", g:"E", n:"透明赭"}
+                ]
+            },
+            "SEN": {
+                name: "Sennelier L'Aquarelle (申內利爾)",
+                desc: "法國百年品牌，添加蜂蜜保濕，色彩明亮具光澤感。適合潮濕氣候。",
+                data: [
+                    // 黃色系 (Yellow - 500)
+                    {c:"501", e:"Lemon Yellow", z:"檸檬黃", h:"#F7F252", g:"Y", n:"冷黃"},
+                    {c:"574", e:"Primary Yellow", z:"原色黃", h:"#FFD700", g:"Y", n:"三原色"},
+                    {c:"578", e:"Sennelier Yellow Light", z:"申內利爾淺黃", h:"#FEDD00", g:"Y", n:"獨家色"},
+                    {c:"579", e:"Sennelier Yellow Deep", z:"申內利爾深黃", h:"#FFB300", g:"Y", n:"獨家色"},
+                    {c:"517", e:"Indian Yellow", z:"印第安黃", h:"#E3A857", g:"Y", n:"濃郁暖黃"},
+                    {c:"529", e:"Cad. Yellow Light", z:"鎘淺黃", h:"#FFF200", g:"Y", n:"不透明"},
+                    {c:"533", e:"Cad. Yellow Deep", z:"鎘深黃", h:"#FFC200", g:"Y", n:""},
+                    {c:"535", e:"Cad. Lemon Yellow", z:"鎘檸檬黃", h:"#F3E500", g:"Y", n:""},
+                    {c:"559", e:"Aureoline", z:"鈷黃", h:"#FDEE00", g:"Y", n:"傳統透明"},
+                    {c:"561", e:"Yellow Lake", z:"湖黃", h:"#FFD700", g:"Y", n:""},
+                    {c:"566", e:"Naples Yellow Deep", z:"那普勒斯深黃", h:"#FADA5E", g:"Y", n:""},
+                    {c:"567", e:"Naples Yellow", z:"那普勒斯黃", h:"#FFF8DC", g:"Y", n:"遮蓋力佳"},
+                    {c:"587", e:"Sophie Yellow", z:"索菲黃", h:"#FFFFE0", g:"Y", n:"淺亮黃"},
+                    {c:"576", e:"Nickel Yellow", z:"鎳黃", h:"#DDBD37", g:"Y", n:""},
+                    {c:"599", e:"Quin. Gold", z:"喹吖酮金", h:"#C58F00", g:"Y", n:"透明金棕"},
+                    // 橘色系 (Orange - 500/600)
+                    {c:"641", e:"Sennelier Orange", z:"申內利爾橙", h:"#FF7F00", g:"Y", n:"鮮豔標準"},
+                    {c:"640", e:"Red Orange", z:"紅橙", h:"#FF4500", g:"Y", n:""},
+                    {c:"645", e:"Chinese Orange", z:"中國橙", h:"#FF6347", g:"Y", n:"焦橙色"},
+                    {c:"537", e:"Cad. Yellow Orange", z:"鎘黃橙", h:"#FFA500", g:"Y", n:""},
+                    {c:"541", e:"Cad. Red Orange", z:"鎘紅橙", h:"#FF4500", g:"Y", n:""},
+                    // 紅粉色系 (Red - 600)
+                    {c:"636", e:"Sennelier Red", z:"申內利爾紅", h:"#E32636", g:"R", n:"招牌紅"},
+                    {c:"675", e:"French Vermilion", z:"法國硃砂", h:"#FF4D00", g:"R", n:"鮮亮暖紅"},
+                    {c:"679", e:"Quin. Red", z:"喹吖酮紅", h:"#E60026", g:"R", n:"耐光紅"},
+                    {c:"689", e:"Alizarin Crimson", z:"茜素緋紅", h:"#E32636", g:"R", n:"傳統深紅"},
+                    {c:"695", e:"Alizarin Crimson Lake", z:"茜素深紅色淀", h:"#960018", g:"R", n:""},
+                    {c:"635", e:"Carmine", z:"胭脂紅", h:"#960018", g:"R", n:""},
+                    {c:"688", e:"Crimson Lake", z:"緋紅色淀", h:"#9E0E25", g:"R", n:""},
+                    {c:"619", e:"Bright Red", z:"亮紅", h:"#FF0000", g:"R", n:""},
+                    {c:"612", e:"Scarlet Laquer", z:"猩紅", h:"#FF2400", g:"R", n:""},
+                    {c:"605", e:"Cad. Red Light", z:"鎘淺紅", h:"#FF3F34", g:"R", n:""},
+                    {c:"611", e:"Cad. Red Purple", z:"鎘紅紫", h:"#A52A2A", g:"R", n:""},
+                    {c:"623", e:"Venetian Red", z:"威尼斯紅", h:"#C80815", g:"R", n:"不透明土紅"},
+                    {c:"659", e:"Opera Rose", z:"歌劇玫瑰紅", h:"#FF00FF", g:"R", n:"螢光極鮮豔"},
+                    {c:"690", e:"Rose Madder Lake", z:"茜草玫瑰紅", h:"#E32636", g:"R", n:""},
+                    {c:"691", e:"Rose Doré Madder", z:"茜草多羅玫瑰", h:"#D65D54", g:"R", n:"偏橘粉紅"},
+                    {c:"680", e:"Perm. Magenta", z:"永固洋紅", h:"#8E3A59", g:"R", n:"調紫必備"},
+                    {c:"499", e:"Perylene Brown", z:"派瑞林紅棕", h:"#800000", g:"R", n:"其實是暗紅"},
+                    // 紫色系 (Violet - 600/900)
+                    {c:"671", e:"Helios Purple", z:"太陽神紫", h:"#800080", g:"V", n:"鮮豔紫紅"},
+                    {c:"917", e:"Dioxazine Purple", z:"二氧化紫", h:"#4B0082", g:"V", n:"強力染色"},
+                    {c:"911", e:"Cobalt Violet Lt", z:"淺鈷紫", h:"#9966CC", g:"V", n:""},
+                    {c:"913", e:"Cobalt Violet Deep", z:"深鈷紫", h:"#8A2BE2", g:"V", n:""},
+                    {c:"903", e:"Blue Violet", z:"藍紫", h:"#8A2BE2", g:"V", n:""},
+                    {c:"905", e:"Red Violet", z:"紅紫", h:"#C71585", g:"V", n:""},
+                    // 藍色系 (Blue - 300)
+                    {c:"314", e:"French Ultramarine", z:"法國群青", h:"#0033CC", g:"B", n:"經典沉澱"},
+                    {c:"312", e:"Ultramarine Light", z:"群青 (淺)", h:"#4166F5", g:"B", n:""},
+                    {c:"315", e:"Ultramarine Deep", z:"群青 (深)", h:"#120A8F", g:"B", n:""},
+                    {c:"307", e:"Cobalt Blue", z:"鈷藍", h:"#0047AB", g:"B", n:""},
+                    {c:"309", e:"Cobalt Deep", z:"深鈷藍", h:"#003399", g:"B", n:""},
+                    {c:"302", e:"Cerulean Blue", z:"天空藍", h:"#2A52BE", g:"B", n:""},
+                    {c:"305", e:"Cerulean Blue Red", z:"天空藍 (紅口)", h:"#3355CC", g:"B", n:""},
+                    {c:"326", e:"Phthalo Blue", z:"酞菁藍", h:"#000F89", g:"B", n:"染色強"},
+                    {c:"399", e:"Sennelier Blue", z:"申內利爾藍", h:"#0047AB", g:"B", n:"類似酞菁"},
+                    {c:"318", e:"Prussian Blue", z:"普魯士藍", h:"#003153", g:"B", n:""},
+                    {c:"308", e:"Indigo", z:"靛藍", h:"#283545", g:"B", n:""},
+                    {c:"395", e:"Indanthrene Blue", z:"陰丹士林藍", h:"#101D6B", g:"B", n:"耐光深藍"},
+                    {c:"322", e:"Royal Blue", z:"皇家藍", h:"#4169E1", g:"B", n:""},
+                    {c:"344", e:"Cinereous Blue", z:"青灰藍", h:"#98AFC7", g:"B", n:"含白暖藍/特色"},
+                    {c:"341", e:"Phthalo Turquoise", z:"酞菁綠松石", h:"#00CED1", g:"B", n:""},
+                    // 綠色系 (Green - 800)
+                    {c:"819", e:"Sap Green", z:"樹汁綠", h:"#477024", g:"G", n:"寫生必備"},
+                    {c:"817", e:"Sennelier Green", z:"申內利爾綠", h:"#00A86B", g:"G", n:"高濃度"},
+                    {c:"805", e:"Phthalo Green Lt", z:"淺酞菁綠", h:"#00A86B", g:"G", n:""},
+                    {c:"807", e:"Phthalo Green Deep", z:"深酞菁綠", h:"#006A4E", g:"G", n:""},
+                    {c:"899", e:"Forest Green", z:"森林綠", h:"#228B22", g:"G", n:""},
+                    {c:"813", e:"Olive Green", z:"橄欖綠", h:"#808000", g:"G", n:""},
+                    {c:"809", e:"Hooker's Green", z:"霍克綠", h:"#49796B", g:"G", n:""},
+                    {c:"837", e:"Viridian", z:"翠綠", h:"#007F5C", g:"G", n:"顆粒感"},
+                    {c:"847", e:"Emerald Green", z:"翡翠綠", h:"#50C878", g:"G", n:""},
+                    {c:"823", e:"Cad. Green Light", z:"鎘淺綠", h:"#90EE90", g:"G", n:""},
+                    {c:"815", e:"Chromium Oxide Green", z:"氧化鉻綠", h:"#556B2F", g:"G", n:"不透明"},
+                    {c:"856", e:"Cobalt Green", z:"鈷綠", h:"#3D9970", g:"G", n:""},
+                    {c:"843", e:"Turquoise Green", z:"綠松石綠", h:"#40E0D0", g:"G", n:""},
+                    {c:"871", e:"Bright Yellow Green", z:"亮黃綠", h:"#ADFF2F", g:"G", n:""},
+                    {c:"857", e:"Brown Green", z:"棕綠", h:"#556B2F", g:"G", n:""},
+                    // 大地系 (Earth - 200/400)
+                    {c:"211", e:"Burnt Sienna", z:"熟赭", h:"#E97451", g:"E", n:"基礎必備"},
+                    {c:"205", e:"Raw Umber", z:"生褐", h:"#826644", g:"E", n:"冷棕色"},
+                    {c:"202", e:"Burnt Umber", z:"熟褐", h:"#8A3324", g:"E", n:"深咖啡"},
+                    {c:"208", e:"Raw Sienna", z:"生赭", h:"#D89656", g:"E", n:"透明土色"},
+                    {c:"252", e:"Yellow Ochre", z:"土黃赭", h:"#C59B45", g:"E", n:""},
+                    {c:"257", e:"Gold Ochre", z:"金赭", h:"#DAA520", g:"E", n:""},
+                    {c:"440", e:"Warm Sepia", z:"烏賊墨暖棕", h:"#704214", g:"E", n:""},
+                    {c:"443", e:"Raw Sepia", z:"烏賊墨生棕", h:"#3B2F2F", g:"E", n:""},
+                    {c:"407", e:"Van Dyck Brown", z:"凡戴克棕", h:"#664228", g:"E", n:""},
+                    {c:"919", e:"Caput Mortuum", z:"骷髏紅", h:"#592720", g:"E", n:"沉澱紅棕"},
+                    {c:"213", e:"Green Earth", z:"土綠", h:"#DEE5CE", g:"E", n:"透明度高"},
+                    {c:"435", e:"Transparent Brown", z:"透明棕", h:"#8B4513", g:"E", n:""},
+                    // 黑白灰 (Black/White - 700/100)
+                    {c:"703", e:"Payne's Grey", z:"佩恩灰", h:"#536878", g:"K", n:"偏藍冷灰/常用"},
+                    {c:"705", e:"Warm Grey", z:"暖灰", h:"#808080", g:"K", n:""},
+                    {c:"709", e:"Sennelier Grey", z:"申內利爾灰", h:"#708090", g:"K", n:""},
+                    {c:"931", e:"Neutral Tint", z:"中性灰", h:"#505050", g:"K", n:""},
+                    {c:"755", e:"Ivory Black", z:"象牙黑", h:"#292421", g:"K", n:""},
+                    {c:"753", e:"Lamp Black", z:"燈黑", h:"#111111", g:"K", n:""},
+                    {c:"112", e:"Chinese White", z:"中國白", h:"#F8F9FA", g:"K", n:"鋅白"},
+                    {c:"116", e:"Titanium White", z:"鈦白", h:"#FFFFFF", g:"K", n:""}
+                ]
+            }
+        };
+
+        let currentBrand = "HLB";
+        
+        // --- Init ---
+        function init() {
+            changeBrand();
+        }
+
+        // --- Logic Functions ---
+        function switchMode(mode) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(`view-${mode}`).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            const idx = mode === 'mixer' ? 0 : 1;
+            document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+        }
+
+        function changeBrand() {
+            currentBrand = document.getElementById('brandSelect').value;
+            const db = DB[currentBrand];
+            
+            // 更新描述
+            document.getElementById('brandDesc').innerText = db.desc;
+            
+            // 重新填充所有選單
+            populateSelects(db.data);
+            
+            // 預設選擇 (Mixer)
+            const selA = document.getElementById('selA');
+            const selB = document.getElementById('selB');
+            selA.selectedIndex = 0;
+            selB.selectedIndex = Math.min(1, db.data.length - 1);
+            
+            // 預設選擇 (Reverse)
+            // 找一個綠色或橘色當預設目標
+            let targetIdx = db.data.findIndex(d => d.g === 'G' || d.g === 'Y');
+            document.getElementById('selTarget').selectedIndex = targetIdx > -1 ? targetIdx : 0;
+
+            updateMixer('A');
+            updateMixer('B');
+            runReverse();
+        }
+
+        function populateSelects(data) {
+            const sels = ['selA', 'selB', 'selTarget'];
+            const groups = {};
+            data.forEach((item, idx) => {
+                if(!groups[item.g]) groups[item.g] = [];
+                groups[item.g].push({idx, item});
+            });
+
+            // 確保 P (特殊色) 排在最前面
+            const order = ["P", "R", "Y", "G", "B", "V", "E", "K"];
+
+            sels.forEach(id => {
+                const select = document.getElementById(id);
+                select.innerHTML = ""; // 清空
+                order.forEach(key => {
+                    if(groups[key]) {
+                        const grp = document.createElement('optgroup');
+                        grp.label = CAT_MAP[key];
+                        groups[key].forEach(obj => {
+                            const opt = document.createElement('option');
+                            opt.value = obj.idx;
+                            opt.text = `${obj.item.c} ${obj.item.z}`;
+                            grp.appendChild(opt);
+                        });
+                        select.appendChild(grp);
+                    }
+                });
+            });
+        }
+
+        // --- Mixer Logic ---
+        function updateMixer(side) {
+            const data = DB[currentBrand].data;
+            if(side) {
+                const idx = document.getElementById(`sel${side}`).value;
+                const item = data[idx];
+                updateDisplay(side, item);
+            }
+
+            const iA = document.getElementById('selA').value;
+            const iB = document.getElementById('selB').value;
+            const itemA = data[iA];
+            const itemB = data[iB];
+
+            const rgbA = hexToRgb(itemA.h);
+            const rgbB = hexToRgb(itemB.h);
+            const mixRGB = [
+                (rgbA[0]+rgbB[0])>>1,
+                (rgbA[1]+rgbB[1])>>1,
+                (rgbA[2]+rgbB[2])>>1
+            ];
+            const mixHex = rgbToHex(mixRGB);
+            const closest = findClosest(mixRGB, data);
+
+            const bgMix = document.getElementById('bgMix');
+            bgMix.style.backgroundColor = mixHex;
+            applyContrast(bgMix, mixHex);
+
+            document.getElementById('codeMix').innerText = "MIX";
+            document.getElementById('nameMix').innerText = closest.item.z;
+            document.getElementById('noteMix').innerText = `${closest.item.c} (相似度: ${closest.sim})`;
+            
+            document.getElementById('analysisText').innerHTML = 
+                `將 <b>${itemA.z}</b> 與 <b>${itemB.z}</b> 混合後，色調最接近本品牌中的：<br>
+                 <span style="color:var(--accent); font-weight:bold; font-size:1.1rem;">${closest.item.c} ${closest.item.z}</span>`;
+        }
+
+        function updateDisplay(side, item) {
+            const bg = document.getElementById(`bg${side}`);
+            bg.style.backgroundColor = item.h;
+            applyContrast(bg, item.h);
+            document.getElementById(`code${side}`).innerText = item.c;
+            document.getElementById(`name${side}`).innerText = item.e;
+            document.getElementById(`note${side}`).innerText = item.z + (item.n ? ` (${item.n})` : "");
+        }
+
+        // --- Reverse Logic ---
+        function runReverse() {
+            const data = DB[currentBrand].data;
+            const targetIdx = document.getElementById('selTarget').value;
+            const targetItem = data[targetIdx];
+            const targetRGB = hexToRgb(targetItem.h);
+
+            document.getElementById('targetSwatch').style.backgroundColor = targetItem.h;
+            document.getElementById('targetName').innerText = `${targetItem.c} ${targetItem.z}`;
+
+            const listEl = document.getElementById('recipeList');
+            listEl.innerHTML = '<div style="text-align:center; padding:30px; color:#aaa;">計算中...</div>';
+
+            setTimeout(() => {
+                let recipes = [];
+                for(let i=0; i<data.length; i++) {
+                    if(i == targetIdx) continue;
+                    for(let j=i+1; j<data.length; j++) {
+                        if(j == targetIdx) continue;
+                        const c1 = data[i]; const c2 = data[j];
+                        
+                        // 簡單優化：同色系混色通常不產出新色相，略過以增加配方多樣性
+                        if(c1.g === c2.g && c1.g === targetItem.g) continue; 
+
+                        const mRGB = [
+                            (hexToRgb(c1.h)[0] + hexToRgb(c2.h)[0]) >> 1,
+                            (hexToRgb(c1.h)[1] + hexToRgb(c2.h)[1]) >> 1,
+                            (hexToRgb(c1.h)[2] + hexToRgb(c2.h)[2]) >> 1
+                        ];
+                        const dist = colorDist(mRGB, targetRGB);
+                        if(dist < 55) {
+                            recipes.push({c1, c2, dist, hex: rgbToHex(mRGB)});
+                        }
+                    }
+                }
+                recipes.sort((a,b) => a.dist - b.dist);
+                const topResults = recipes.slice(0, 10);
+
+                listEl.innerHTML = "";
+                if(topResults.length === 0) {
+                    listEl.innerHTML = '<div style="text-align:center; padding:20px;">找不到由兩色混合的接近配方。</div>';
+                    return;
+                }
+
+                topResults.forEach(r => {
+                    const score = Math.max(0, 100 - r.dist * 1.5).toFixed(0);
+                    const el = document.createElement('div');
+                    el.className = 'recipe-item';
+                    el.innerHTML = `
+                        <div style="flex:1;">
+                            <span class="match-score">Match: ${score}%</span>
+                            <div style="margin-top:8px; font-size:0.95rem; font-weight:500;">
+                                ${r.c1.z} + ${r.c2.z}
+                            </div>
+                            <div class="recipe-visual" style="margin-top:8px;">
+                                <div class="mini-swatch" style="background:${r.c1.h}"></div>
+                                <span class="operator">+</span>
+                                <div class="mini-swatch" style="background:${r.c2.h}"></div>
+                                <span class="operator">=</span>
+                                <div class="mini-swatch" style="background:${r.hex}; border-color:${targetItem.h};"></div>
+                            </div>
+                        </div>
+                    `;
+                    listEl.appendChild(el);
+                });
+            }, 50);
+        }
+
+        // --- Tools ---
+        function hexToRgb(hex) { return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)]; }
+        function rgbToHex(rgb) { return "#" + ((1<<24) + (rgb[0]<<16) + (rgb[1]<<8) + rgb[2]).toString(16).slice(1); }
+        function colorDist(c1, c2) { return Math.sqrt(Math.pow(c1[0]-c2[0],2) + Math.pow(c1[1]-c2[1],2) + Math.pow(c1[2]-c2[2],2)); }
+        function findClosest(target, list) {
+            let min = Infinity, best = null;
+            list.forEach(item => {
+                const dist = colorDist(target, hexToRgb(item.h));
+                if(dist < min) { min = dist; best = item; }
+            });
+            let sim = min < 30 ? "極高" : (min < 60 ? "高" : "中");
+            return { item: best, sim: sim };
+        }
+        function applyContrast(el, hex) {
+            const rgb = hexToRgb(hex);
+            const yiq = ((rgb[0]*299)+(rgb[1]*587)+(rgb[2]*114))/1000;
+            if(yiq >= 128) { el.classList.add('text-dark'); el.classList.remove('text-light'); }
+            else { el.classList.add('text-light'); el.classList.remove('text-dark'); }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
