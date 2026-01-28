@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Watercolor Mixing Lab | Professional Watercolor Mixing Tool">
-    <title>Watercolor Mixing Lab | 你的水彩研究室</title>
+    <title>Watercolor Mixing Lab | 你的水彩研究室 (V3 Physics)</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #d35400;
+            --accent: #5e35b1; /* 深紫色強調專業感 */
             --bg: #fdfbf7;
-            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-bg: rgba(255, 255, 255, 0.96);
             --shadow: 0 10px 40px rgba(0,0,0,0.08);
             --radius: 24px;
             --font-main: 'Noto Sans TC', sans-serif;
@@ -23,7 +23,7 @@
         body {
             font-family: var(--font-main);
             background-color: var(--bg);
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
             color: var(--primary);
             margin: 0;
             min-height: 100vh;
@@ -32,7 +32,7 @@
         }
 
         header {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(12px);
             padding: 15px 20px;
             box-shadow: 0 1px 20px rgba(0,0,0,0.04);
@@ -132,30 +132,44 @@
         .swatch-container {
             padding: 20px;
             display: flex; justify-content: center; align-items: center;
-            background-image: radial-gradient(circle at center, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            background-image: radial-gradient(circle at center, rgba(255,255,255,0.95), rgba(255,255,255,0.1));
             border-radius: var(--radius) var(--radius) 0 0;
             position: relative;
+            min-height: 160px;
         }
 
         .organic-swatch {
             width: 120px; height: 120px;
             border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            transition: all 0.5s ease;
+            transition: background-color 0.2s ease, border-radius 2s ease;
             position: relative;
-            box-shadow: inset 2px -2px 10px rgba(0,0,0,0.1);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 5px 10px 15px rgba(0,0,0,0.05);
             display: flex; align-items: center; justify-content: center;
             flex-direction: column;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.2);
             text-align: center;
             padding: 10px;
+            /* 讓混合結果有微微的流動感 */
+            animation: fluidShape 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes fluidShape {
+            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            100% { border-radius: 50% 40% 30% 70% / 60% 30% 70% 40%; }
         }
         
         .organic-swatch.large {
-            width: 150px; height: 150px;
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            width: 160px; height: 160px;
+        }
+        
+        .organic-swatch::after {
+            content: ''; position: absolute; top:0; left:0; right:0; bottom:0;
+            border-radius: inherit;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+            pointer-events: none;
         }
 
-        /* 顯示資訊層次 */
         .swatch-info { z-index: 2; display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
         .swatch-code { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700; margin-bottom: 2px; }
         .swatch-name-zh { font-size: 0.9rem; font-weight: 500; margin-bottom: 2px; white-space: nowrap; }
@@ -164,13 +178,14 @@
         .controls { padding: 15px; background: #fff; border-radius: 0 0 var(--radius) var(--radius); }
 
         .water-control {
-            margin: 15px 0; padding: 10px; background: #f4f8fb; border-radius: 12px; text-align: center;
+            margin: 15px 0; padding: 15px; background: #f4f8fb; border-radius: 12px; text-align: center;
         }
-        .slider-label { font-size: 0.7rem; color: #7f8c8d; margin-bottom: 5px; display: flex; justify-content: space-between; font-weight: 600; }
+        .slider-label { font-size: 0.75rem; color: #7f8c8d; margin-bottom: 8px; display: flex; justify-content: space-between; font-weight: 600; }
         input[type=range] { width: 100%; -webkit-appearance: none; background: transparent; }
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%;
-            background: var(--primary); cursor: pointer; margin-top: -6px;
+            -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%;
+            background: var(--primary); cursor: pointer; margin-top: -7px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         input[type=range]::-webkit-slider-runnable-track {
             width: 100%; height: 4px; cursor: pointer; background: #dceef7; border-radius: 2px;
@@ -218,11 +233,16 @@
         .option-text-sub { font-size: 0.75rem; color: #888; font-family: var(--font-serif); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         .analysis-box {
-            font-size: 0.85rem; color: #555; line-height: 1.6; padding: 12px;
+            font-size: 0.85rem; color: #555; line-height: 1.6; padding: 15px;
             background: #fcfcfc; border-radius: 10px; border: 1px dashed #e0e0e0;
         }
+        
+        .color-tag {
+            display: inline-block; padding: 2px 6px; border-radius: 4px; 
+            font-size: 0.6rem; margin-top: 4px; font-weight: 700; color: white;
+            opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
 
-        /* 逆向推演區塊樣式 - 嚴格按照三層架構 */
         .reverse-header {
             background: #fff; padding: 15px; border-radius: var(--radius);
             box-shadow: var(--shadow); margin-bottom: 20px;
@@ -232,7 +252,10 @@
             background: #fff; border-radius: 16px; margin-bottom: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f0f0f0;
             overflow: hidden;
+            transition: transform 0.2s;
         }
+        .result-card:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.06); }
+
         .result-header {
             padding: 8px 15px; background: #f8f9fa; border-bottom: 1px solid #eee;
             display: flex; justify-content: space-between; font-size: 0.8rem; color: #666;
@@ -245,7 +268,7 @@
         
         .mini-swatch-col { 
             display: flex; flex-direction: column; align-items: center; 
-            width: 32%; text-align: center; 
+            width: 30%; text-align: center; 
         }
         
         .mini-circle {
@@ -253,27 +276,15 @@
             border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* Reverse 標籤樣式 - 三層結構 */
-        .mini-label-c { 
-            font-family: var(--font-serif); font-weight: 700; font-size: 0.95rem; 
-            line-height: 1; color: var(--primary); margin-bottom: 3px;
-        }
-        .mini-label-z { 
-            font-size: 0.8rem; font-weight: 500; line-height: 1.2; margin-bottom: 2px;
-            width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-            color: #333;
-        }
-        .mini-label-e { 
-            font-size: 0.65rem; color: #999; 
-            font-family: var(--font-serif); font-style: italic; 
-            width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-        }
+        .mini-label-c { font-family: var(--font-serif); font-weight: 700; font-size: 0.95rem; line-height: 1; color: var(--primary); margin-bottom: 3px; }
+        .mini-label-z { font-size: 0.8rem; font-weight: 500; line-height: 1.2; margin-bottom: 2px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #333; }
+        .mini-label-e { font-size: 0.65rem; color: #999; font-family: var(--font-serif); font-style: italic; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         .math-symbol { color: #ccc; font-family: var(--font-serif); font-style: italic; font-size: 1.2rem; }
 
-        .text-light .swatch-name-zh { color: #fff; }
-        .text-light .swatch-name-en { color: rgba(255,255,255,0.8); }
-        .text-dark .swatch-name-zh { color: #2c3e50; }
+        .text-light .swatch-name-zh, .text-light .swatch-code { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+        .text-light .swatch-name-en { color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+        .text-dark .swatch-name-zh, .text-dark .swatch-code { color: #2c3e50; }
         .text-dark .swatch-name-en { color: rgba(44, 62, 80, 0.7); }
 
         label { display: block; font-size: 0.65rem; color: #95a5a6; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
@@ -285,9 +296,9 @@
 
         @media (max-width: 900px) {
             .mixer-grid { grid-template-columns: 1fr; gap: 15px; }
-            .swatch-container { padding: 15px; }
+            .swatch-container { padding: 15px; min-height: 140px; }
             .organic-swatch { width: 100px; height: 100px; }
-            .organic-swatch.large { width: 120px; height: 120px; margin: 0 auto; }
+            .organic-swatch.large { width: 140px; height: 140px; margin: 0 auto; }
             
             .custom-options {
                 position: fixed; top: auto; bottom: 0; left: 0; right: 0;
@@ -481,16 +492,28 @@
                 name: "Sennelier L'Aquarelle (法國申內利爾)",
                 desc: "1887 年創立，添加蜂蜜的保濕配方，模擬巴黎的光線感。",
                 data: [
-                    {c:"501", e:"Lemon Yellow", z:"檸檬黃", h:"#F7F252", g:"Y"}, {c:"574", e:"Primary Yellow", z:"原色黃", h:"#FFD700", g:"Y"}, {c:"578", e:"Sennelier Yellow Light", z:"申內利爾淺黃", h:"#FEDD00", g:"Y"}, {c:"579", e:"Sennelier Yellow Deep", z:"申內利爾深黃", h:"#FFB300", g:"Y"}, {c:"517", e:"Indian Yellow", z:"印第安黃", h:"#E3A857", g:"Y"}, {c:"529", e:"Cad. Yellow Light", z:"鎘淺黃", h:"#FFF200", g:"Y"}, {c:"533", e:"Cad. Yellow Deep", z:"鎘深黃", h:"#FFC200", g:"Y"}, {c:"535", e:"Cad. Lemon Yellow", z:"鎘檸檬黃", h:"#F3E500", g:"Y"}, {c:"559", e:"Aureoline", z:"鈷黃", h:"#FDEE00", g:"Y"}, {c:"561", e:"Yellow Lake", z:"湖黃", h:"#FFD700", g:"Y"}, {c:"566", e:"Naples Yellow Deep", z:"那普勒斯深黃", h:"#FADA5E", g:"Y"}, {c:"567", e:"Naples Yellow", z:"那普勒斯黃", h:"#FFF8DC", g:"Y"}, {c:"587", e:"Sophie Yellow", z:"索菲黃", h:"#FFFFE0", g:"Y"}, {c:"576", e:"Nickel Yellow", z:"鎳黃", h:"#DDBD37", g:"Y"}, {c:"599", e:"Quin. Gold", z:"喹吖酮金", h:"#C58F00", g:"Y"}, {c:"641", e:"Sennelier Orange", z:"申內利爾橙", h:"#FF7F00", g:"Y"}, {c:"640", e:"Red Orange", z:"紅橙", h:"#FF4500", g:"Y"}, {c:"645", e:"Chinese Orange", z:"中國橙", h:"#FF6347", g:"Y"}, {c:"537", e:"Cad. Yellow Orange", z:"鎘黃橙", h:"#FFA500", g:"Y"}, {c:"541", e:"Cad. Red Orange", z:"鎘紅橙", h:"#FF4500", g:"Y"}, {c:"636", e:"Sennelier Red", z:"申內利爾紅", h:"#E32636", g:"R"}, {c:"675", e:"French Vermilion", z:"法國硃砂", h:"#FF4D00", g:"R"}, {c:"679", e:"Quin. Red", z:"喹吖酮紅", h:"#E60026", g:"R"}, {c:"689", e:"Alizarin Crimson", z:"茜素緋紅", h:"#E32636", g:"R"}, {c:"695", e:"Alizarin Crimson Lake", z:"茜素深紅色淀", h:"#960018", g:"R"}, {c:"635", e:"Carmine", z:"胭脂紅", h:"#960018", g:"R"}, {c:"688", e:"Crimson Lake", z:"緋紅色淀", h:"#9E0E25", g:"R"}, {c:"619", e:"Bright Red", z:"亮紅", h:"#FF0000", g:"R"}, {c:"612", e:"Scarlet Laquer", z:"猩紅", h:"#FF2400", g:"R"}, {c:"605", e:"Cad. Red Light", z:"鎘淺紅", h:"#FF3F34", g:"R"}, {c:"611", e:"Cad. Red Purple", z:"鎘紅紫", h:"#A52A2A", g:"R"}, {c:"623", e:"Venetian Red", z:"威尼斯紅", h:"#C80815", g:"R"}, {c:"659", e:"Opera Rose", z:"歌劇玫瑰紅", h:"#FF00FF", g:"R"}, {c:"690", e:"Rose Madder Lake", z:"茜草玫瑰紅", h:"#E32636", g:"R"}, {c:"691", e:"Rose Doré Madder", z:"茜草多羅玫瑰", h:"#D65D54", g:"R"}, {c:"680", e:"Perm. Magenta", z:"永固洋紅", h:"#8E3A59", g:"R"}, {c:"499", e:"Perylene Brown", z:"派瑞林紅棕", h:"#800000", g:"R"}, {c:"671", e:"Helios Purple", z:"太陽神紫", h:"#800080", g:"V"}, {c:"917", e:"Dioxazine Purple", z:"二氧化紫", h:"#4B0082", g:"V"}, {c:"911", e:"Cobalt Violet Lt", z:"淺鈷紫", h:"#9966CC", g:"V"}, {c:"913", e:"Cobalt Violet Deep", z:"深鈷紫", h:"#8A2BE2", g:"V"}, {c:"903", e:"Blue Violet", z:"藍紫", h:"#8A2BE2", g:"V"}, {c:"905", e:"Red Violet", z:"紅紫", h:"#C71585", g:"V"}, {c:"314", e:"French Ultramarine", z:"法國群青", h:"#0033CC", g:"B"}, {c:"312", e:"Ultramarine Light", z:"群青 (淺)", h:"#4166F5", g:"B"}, {c:"315", e:"Ultramarine Deep", z:"群青 (深)", h:"#120A8F", B:"B"}, {c:"307", e:"Cobalt Blue", z:"鈷藍", h:"#0047AB", g:"B"}, {c:"309", e:"Cobalt Deep", z:"深鈷藍", h:"#003399", g:"B"}, {c:"302", e:"Cerulean Blue", z:"天空藍", h:"#2A52BE", g:"B"}, {c:"305", e:"Cerulean Blue Red", z:"天空藍 (紅口)", h:"#3355CC", g:"B"}, {c:"326", e:"Phthalo Blue", z:"酞菁藍", h:"#000F89", g:"B"}, {c:"399", e:"Sennelier Blue", z:"申內利爾藍", h:"#0047AB", g:"B"}, {c:"318", e:"Prussian Blue", z:"普魯士藍", h:"#003153", g:"B"}, {c:"308", e:"Indigo", z:"靛藍", h:"#283545", g:"B"}, {c:"395", e:"Indanthrene Blue", z:"陰丹士林藍", h:"#101D6B", g:"B"}, {c:"322", e:"Royal Blue", z:"皇家藍", h:"#4169E1", g:"B"}, {c:"344", e:"Cinereous Blue", z:"青灰藍", h:"#98AFC7", g:"B"}, {c:"341", e:"Phthalo Turquoise", z:"酞菁綠松石", h:"#00CED1", g:"B"}, {c:"819", e:"Sap Green", z:"樹汁綠", h:"#477024", g:"G"}, {c:"817", e:"Sennelier Green", z:"申內利爾綠", h:"#00A86B", g:"G"}, {c:"805", e:"Phthalo Green Lt", z:"淺酞菁綠", h:"#00A86B", g:"G"}, {c:"807", e:"Phthalo Green Deep", z:"深酞菁綠", h:"#006A4E", g:"G"}, {c:"899", e:"Forest Green", z:"森林綠", h:"#228B22", g:"G"}, {c:"813", e:"Olive Green", z:"橄欖綠", h:"#808000", g:"G"}, {c:"809", e:"Hooker's Green", z:"霍克綠", h:"#49796B", g:"G"}, {c:"837", e:"Viridian", z:"翠綠", h:"#007F5C", g:"G"}, {c:"847", e:"Emerald Green", z:"翡翠綠", h:"#50C878", g:"G"}, {c:"823", e:"Cad. Green Light", z:"鎘淺綠", h:"#90EE90", g:"G"}, {c:"815", e:"Chromium Oxide Green", z:"氧化鉻綠", h:"#556B2F", g:"G"}, {c:"856", e:"Cobalt Green", z:"鈷綠", h:"#3D9970", g:"G"}, {c:"843", e:"Turquoise Green", z:"綠松石綠", h:"#40E0D0", g:"G"}, {c:"871", e:"Bright Yellow Green", z:"亮黃綠", h:"#ADFF2F", g:"G"}, {c:"857", e:"Brown Green", z:"棕綠", h:"#556B2F", g:"G"}, {c:"211", e:"Burnt Sienna", z:"熟赭", h:"#E97451", g:"E"}, {c:"205", e:"Raw Umber", z:"生褐", h:"#826644", g:"E"}, {c:"202", e:"Burnt Umber", z:"熟褐", h:"#8A3324", g:"E"}, {c:"208", e:"Raw Sienna", z:"生赭", h:"#D89656", g:"E"}, {c:"252", e:"Yellow Ochre", z:"土黃赭", h:"#C59B45", g:"E"}, {c:"257", e:"Gold Ochre", z:"金赭", h:"#DAA520", g:"E"}, {c:"440", e:"Warm Sepia", z:"烏賊墨暖棕", h:"#704214", g:"E"}, {c:"443", e:"Raw Sepia", z:"烏賊墨生棕", h:"#3B2F2F", g:"E"}, {c:"407", e:"Van Dyck Brown", z:"凡戴克棕", h:"#664228", g:"E"}, {c:"919", e:"Caput Mortuum", z:"骷髏紅", h:"#592720", g:"E"}, {c:"213", e:"Green Earth", z:"土綠", h:"#DEE5CE", g:"E"}, {c:"435", e:"Transparent Brown", z:"透明棕", h:"#8B4513", g:"E"}, {c:"703", e:"Payne's Grey", z:"佩恩灰", h:"#536878", g:"K"}, {c:"705", e:"Warm Grey", z:"暖灰", h:"#808000", g:"K"}, {c:"709", e:"Sennelier Grey", z:"申內利爾灰", h:"#708090", g:"K"}, {c:"931", e:"Neutral Tint", z:"中性灰", h:"#505050", g:"K"}, {c:"755", e:"Ivory Black", z:"象牙黑", h:"#292421", g:"K"}, {c:"753", e:"Lamp Black", z:"燈黑", h:"#111111", g:"K"}, {c:"112", e:"Chinese White", z:"中國白", h:"#F8F9FA", g:"K"}, {c:"116", e:"Titanium White", z:"鈦白", h:"#FFFFFF", g:"K"}
+                    {c:"501", e:"Lemon Yellow", z:"檸檬黃", h:"#F7F252", g:"Y"}, {c:"574", e:"Primary Yellow", z:"原色黃", h:"#FFD700", g:"Y"}, {c:"578", e:"Sennelier Yellow Light", z:"申內利爾淺黃", h:"#FEDD00", g:"Y"}, {c:"579", e:"Sennelier Yellow Deep", z:"申內利爾深黃", h:"#FFB300", g:"Y"}, {c:"517", e:"Indian Yellow", z:"印第安黃", h:"#E3A857", g:"Y"}, {c:"529", e:"Cad. Yellow Light", z:"鎘淺黃", h:"#FFF200", g:"Y"}, {c:"533", e:"Cad. Yellow Deep", z:"鎘深黃", h:"#FFC200", g:"Y"}, {c:"535", e:"Cad. Lemon Yellow", z:"鎘檸檬黃", h:"#F3E500", g:"Y"}, {c:"559", e:"Aureoline", z:"鈷黃", h:"#FDEE00", g:"Y"}, {c:"561", e:"Yellow Lake", z:"湖黃", h:"#FFD700", g:"Y"}, {c:"566", e:"Naples Yellow Deep", z:"那普勒斯深黃", h:"#FADA5E", g:"Y"}, {c:"567", e:"Naples Yellow", z:"那普勒斯黃", h:"#FFF8DC", g:"Y"}, {c:"587", e:"Sophie Yellow", z:"索菲黃", h:"#FFFFE0", g:"Y"}, {c:"576", e:"Nickel Yellow", z:"鎳黃", h:"#DDBD37", g:"Y"}, {c:"599", e:"Quin. Gold", z:"喹吖酮金", h:"#C58F00", g:"Y"}, {c:"641", e:"Sennelier Orange", z:"申內利爾橙", h:"#FF7F00", g:"Y"}, {c:"640", e:"Red Orange", z:"紅橙", h:"#FF4500", g:"Y"}, {c:"645", e:"Chinese Orange", z:"中國橙", h:"#FF6347", g:"Y"}, {c:"537", e:"Cad. Yellow Orange", z:"鎘黃橙", h:"#FFAA00", g:"Y"}, {c:"541", e:"Cad. Red Orange", z:"鎘紅橙", h:"#FF4500", g:"Y"}, {c:"636", e:"Sennelier Red", z:"申內利爾紅", h:"#E32636", g:"R"}, {c:"675", e:"French Vermilion", z:"法國硃砂", h:"#FF4D00", g:"R"}, {c:"679", e:"Quin. Red", z:"喹吖酮紅", h:"#E60026", g:"R"}, {c:"689", e:"Alizarin Crimson", z:"茜素緋紅", h:"#E32636", g:"R"}, {c:"695", e:"Alizarin Crimson Lake", z:"茜素深紅色淀", h:"#960018", g:"R"}, {c:"635", e:"Carmine", z:"胭脂紅", h:"#960018", g:"R"}, {c:"688", e:"Crimson Lake", z:"緋紅色淀", h:"#9E0E25", g:"R"}, {c:"619", e:"Bright Red", z:"亮紅", h:"#FF0000", g:"R"}, {c:"612", e:"Scarlet Laquer", z:"猩紅", h:"#FF2400", g:"R"}, {c:"605", e:"Cad. Red Light", z:"鎘淺紅", h:"#FF3F34", g:"R"}, {c:"611", e:"Cad. Red Purple", z:"鎘紅紫", h:"#A52A2A", g:"R"}, {c:"623", e:"Venetian Red", z:"威尼斯紅", h:"#C80815", g:"R"}, {c:"659", e:"Opera Rose", z:"歌劇玫瑰紅", h:"#FF00FF", g:"R"}, {c:"690", e:"Rose Madder Lake", z:"茜草玫瑰紅", h:"#E32636", g:"R"}, {c:"691", e:"Rose Doré Madder", z:"茜草多羅玫瑰", h:"#D65D54", g:"R"}, {c:"680", e:"Perm. Magenta", z:"永固洋紅", h:"#8E3A59", g:"R"}, {c:"499", e:"Perylene Brown", z:"派瑞林紅棕", h:"#800000", g:"R"}, {c:"671", e:"Helios Purple", z:"太陽神紫", h:"#800080", g:"V"}, {c:"917", e:"Dioxazine Purple", z:"二氧化紫", h:"#4B0082", g:"V"}, {c:"911", e:"Cobalt Violet Lt", z:"淺鈷紫", h:"#9966CC", g:"V"}, {c:"913", e:"Cobalt Violet Deep", z:"深鈷紫", h:"#8A2BE2", g:"V"}, {c:"903", e:"Blue Violet", z:"藍紫", h:"#8A2BE2", g:"V"}, {c:"905", e:"Red Violet", z:"紅紫", h:"#C71585", g:"V"}, {c:"314", e:"French Ultramarine", z:"法國群青", h:"#0033CC", g:"B"}, {c:"312", e:"Ultramarine Light", z:"群青 (淺)", h:"#4166F5", g:"B"}, {c:"315", e:"Ultramarine Deep", z:"群青 (深)", h:"#120A8F", B:"B"}, {c:"307", e:"Cobalt Blue", z:"鈷藍", h:"#0047AB", g:"B"}, {c:"309", e:"Cobalt Deep", z:"深鈷藍", h:"#003399", g:"B"}, {c:"302", e:"Cerulean Blue", z:"天空藍", h:"#2A52BE", g:"B"}, {c:"305", e:"Cerulean Blue Red", z:"天空藍 (紅口)", h:"#3355CC", g:"B"}, {c:"326", e:"Phthalo Blue", z:"酞菁藍", h:"#000F89", g:"B"}, {c:"399", e:"Sennelier Blue", z:"申內利爾藍", h:"#0047AB", g:"B"}, {c:"318", e:"Prussian Blue", z:"普魯士藍", h:"#003153", g:"B"}, {c:"308", e:"Indigo", z:"靛藍", h:"#283545", g:"B"}, {c:"395", e:"Indanthrene Blue", z:"陰丹士林藍", h:"#101D6B", g:"B"}, {c:"322", e:"Royal Blue", z:"皇家藍", h:"#4169E1", g:"B"}, {c:"344", e:"Cinereous Blue", z:"青灰藍", h:"#98AFC7", g:"B"}, {c:"341", e:"Phthalo Turquoise", z:"酞菁綠松石", h:"#00CED1", g:"B"}, {c:"819", e:"Sap Green", z:"樹汁綠", h:"#477024", g:"G"}, {c:"817", e:"Sennelier Green", z:"申內利爾綠", h:"#00A86B", g:"G"}, {c:"805", e:"Phthalo Green Lt", z:"淺酞菁綠", h:"#00A86B", g:"G"}, {c:"807", e:"Phthalo Green Deep", z:"深酞菁綠", h:"#006A4E", g:"G"}, {c:"899", e:"Forest Green", z:"森林綠", h:"#228B22", g:"G"}, {c:"813", e:"Olive Green", z:"橄欖綠", h:"#808000", g:"G"}, {c:"809", e:"Hooker's Green", z:"霍克綠", h:"#49796B", g:"G"}, {c:"837", e:"Viridian", z:"翠綠", h:"#007F5C", g:"G"}, {c:"847", e:"Emerald Green", z:"翡翠綠", h:"#50C878", g:"G"}, {c:"823", e:"Cad. Green Light", z:"鎘淺綠", h:"#90EE90", g:"G"}, {c:"815", e:"Chromium Oxide Green", z:"氧化鉻綠", h:"#556B2F", g:"G"}, {c:"856", e:"Cobalt Green", z:"鈷綠", h:"#3D9970", g:"G"}, {c:"843", e:"Turquoise Green", z:"綠松石綠", h:"#40E0D0", g:"G"}, {c:"871", e:"Bright Yellow Green", z:"亮黃綠", h:"#ADFF2F", g:"G"}, {c:"857", e:"Brown Green", z:"棕綠", h:"#556B2F", g:"G"}, {c:"211", e:"Burnt Sienna", z:"熟赭", h:"#E97451", g:"E"}, {c:"205", e:"Raw Umber", z:"生褐", h:"#826644", g:"E"}, {c:"202", e:"Burnt Umber", z:"熟褐", h:"#8A3324", g:"E"}, {c:"208", e:"Raw Sienna", z:"生赭", h:"#D89656", g:"E"}, {c:"252", e:"Yellow Ochre", z:"土黃赭", h:"#C59B45", g:"E"}, {c:"257", e:"Gold Ochre", z:"金赭", h:"#DAA520", g:"E"}, {c:"440", e:"Warm Sepia", z:"烏賊墨暖棕", h:"#704214", g:"E"}, {c:"443", e:"Raw Sepia", z:"烏賊墨生棕", h:"#3B2F2F", g:"E"}, {c:"407", e:"Van Dyck Brown", z:"凡戴克棕", h:"#664228", g:"E"}, {c:"919", e:"Caput Mortuum", z:"骷髏紅", h:"#592720", g:"E"}, {c:"213", e:"Green Earth", z:"土綠", h:"#DEE5CE", g:"E"}, {c:"435", e:"Transparent Brown", z:"透明棕", h:"#8B4513", g:"E"}, {c:"703", e:"Payne's Grey", z:"佩恩灰", h:"#536878", g:"K"}, {c:"705", e:"Warm Grey", z:"暖灰", h:"#808000", g:"K"}, {c:"709", e:"Sennelier Grey", z:"申內利爾灰", h:"#708090", g:"K"}, {c:"931", e:"Neutral Tint", z:"中性灰", h:"#505050", g:"K"}, {c:"755", e:"Ivory Black", z:"象牙黑", h:"#292421", g:"K"}, {c:"753", e:"Lamp Black", z:"燈黑", h:"#111111", g:"K"}, {c:"112", e:"Chinese White", z:"中國白", h:"#F8F9FA", g:"K"}, {c:"116", e:"Titanium White", z:"鈦白", h:"#FFFFFF", g:"K"}
                 ]
             }
         };
 
-        let currentBrand = "RMB";
+        let currentBrand = "HLB"; // Default to Holbein for verification
         
         function init() {
+            document.getElementById('brandSelect').value = "HLB";
             changeBrand();
-            // Close selects when clicking outside
+            
+            // Auto Select W207 and W290 for verification
+            setTimeout(() => {
+                const db = DB["HLB"].data;
+                const idxA = db.findIndex(d => d.c === "W207");
+                const idxB = db.findIndex(d => d.c === "W290");
+                if(idxA > -1 && idxB > -1) {
+                    selectOption('selA', idxA);
+                    selectOption('selB', idxB);
+                }
+            }, 100);
+
             window.addEventListener('click', function(e) {
                 if (!e.target.closest('.custom-select-wrapper')) {
                     document.querySelectorAll('.custom-select-wrapper').forEach(el => el.classList.remove('open'));
@@ -512,16 +535,14 @@
             const db = DB[currentBrand];
             document.getElementById('brandDesc').innerText = db.desc;
             
-            // Populate logic selects
             populateHiddenSelects(db.data);
             
-            // Reset Selections
             const selA = document.getElementById('selA');
             const selB = document.getElementById('selB');
+            
             selA.selectedIndex = 0;
             selB.selectedIndex = Math.min(db.data.length-1, 5); 
             
-            // Rebuild UI
             buildCustomOptions('selA', db.data);
             buildCustomOptions('selB', db.data);
             buildCustomOptions('selTarget', db.data);
@@ -648,17 +669,16 @@
             const itemA = data[idxA];
             const itemB = data[idxB];
             
-            // Update UI for A and B
             updateSwatchUI('A', itemA);
             updateSwatchUI('B', itemB);
             
-            // Mix Logic (Enhanced with Water)
             const waterLevel = parseInt(document.getElementById('waterLevel').value) / 100;
-            const mixRGB = mixColorsSubtractive(itemA.h, itemB.h, waterLevel);
+            
+            // 使用 V3 物理引擎
+            const mixRGB = mixColorsPhysics(itemA.h, itemB.h, waterLevel);
             const mixHex = rgbToHex(mixRGB);
             const closest = findClosest(mixRGB, data);
             
-            // Update Mix Result
             const swatchMix = document.getElementById('swatchMix');
             swatchMix.style.backgroundColor = mixHex;
             applyContrast(swatchMix, mixHex);
@@ -667,11 +687,22 @@
             document.getElementById('nameZhMix').innerText = "Result";
             document.getElementById('nameEnMix').innerText = "Simulation";
             
-            // Analysis Text
             let html = `<b>${itemA.c} ${itemA.z}</b> + <b>${itemB.c} ${itemB.z}</b>`;
             if(waterLevel > 0) html += ` (+ ${(waterLevel*100).toFixed(0)}% Water)`;
+            
+            const hsv = rgbToHsv(mixRGB[0], mixRGB[1], mixRGB[2]);
+            let tag = "";
+            
+            if (hsv.s < 0.1) tag = "Neutral / Grey";
+            else if (hsv.h >= 260 && hsv.h <= 320) tag = "Purple (紫色系)";
+            else if (hsv.h >= 80 && hsv.h <= 160) tag = "Green (綠色系)";
+            else if (hsv.h > 180 && hsv.h < 260) tag = "Blue (藍色系)";
+            else if (hsv.h >= 30 && hsv.h < 50) tag = "Orange/Earth (橘/大地)";
+            
+            if (tag) html += `<br><span class="color-tag" style="background:${mixHex};">${tag}</span>`;
+
             html += `<br><div style="margin-top:8px; font-size:0.8rem; color:#888;">Closest Match / 最接近：</div>`;
-            html += `<div style="color:var(--accent); font-weight:700; font-size:1.1rem; line-height:1.2;">
+            html += `<div style="color:var(--primary); font-weight:700; font-size:1.1rem; line-height:1.2;">
                 ${closest.item.c} ${closest.item.z}
                 <div style="font-size:0.8rem; font-weight:400; font-style:italic;">${closest.item.e}</div>
             </div>`;
@@ -687,41 +718,135 @@
             document.getElementById(`nameEn${side}`).innerText = item.e;
         }
 
-        // --- 優化版混色算法 (模擬減色法 CMYK) ---
-        function mixColorsSubtractive(hexA, hexB, water) {
-            const rgbA = hexToRgb(hexA);
-            const rgbB = hexToRgb(hexB);
+        // ==========================================
+        // V3 核心演算法：基於色相環的物理校正 (Color Wheel Physics)
+        // ==========================================
+        
+        function mixColorsPhysics(hexA, hexB, water) {
+            const rgbA = hexToRgb(hexA).map(v => v / 255);
+            const rgbB = hexToRgb(hexB).map(v => v / 255);
             
-            // Convert RGB to CMY (Simplified)
-            const cmyA = rgbA.map(v => 255 - v);
-            const cmyB = rgbB.map(v => 255 - v);
+            // 1. Calculate Hue for Input Colors
+            const hsvA = rgbToHsv(rgbA[0]*255, rgbA[1]*255, rgbA[2]*255);
+            const hsvB = rgbToHsv(rgbB[0]*255, rgbB[1]*255, rgbB[2]*255);
             
-            // Mix CMY (Geometric Mean produces better secondary colors than Arithmetic)
-            const mixCMY = [];
+            // 2. Determine Mix Intent based on Hue Distance
+            // Normalize hues to 0-360
+            const hueA = hsvA.h;
+            const hueB = hsvB.h;
+            
+            // Identify Color Categories
+            const isRed = (h) => (h >= 330 || h <= 20);
+            const isBlue = (h) => (h >= 180 && h <= 260);
+            const isYellow = (h) => (h >= 40 && h <= 70);
+            
+            // Detect Mix Types
+            const isRedBlue = (isRed(hueA) && isBlue(hueB)) || (isRed(hueB) && isBlue(hueA));
+            const isBlueYellow = (isBlue(hueA) && isYellow(hueB)) || (isBlue(hueB) && isYellow(hueA));
+            const isRedYellow = (isRed(hueA) && isYellow(hueB)) || (isRed(hueB) && isYellow(hueA));
+
+            // 3. Convert to CMY for Subtractive Mixing
+            const cmyA = rgbA.map(v => 1 - v);
+            const cmyB = rgbB.map(v => 1 - v);
+
+            let mixCMY = [];
             for(let i=0; i<3; i++) {
+                // Weighted Mix: Geometric Mean (Subtractive) + Arithmetic Mean (Additive/Averaging)
+                // Using 70% Geometric creates deeper, richer mixes
                 const geo = Math.sqrt(cmyA[i] * cmyB[i]);
                 const ari = (cmyA[i] + cmyB[i]) / 2;
-                mixCMY[i] = (geo * 0.7) + (ari * 0.3); 
+                mixCMY[i] = geo * 0.7 + ari * 0.3;
             }
+
+            // 4. Color Wheel Correction (The "Kill Switch")
             
-            // Convert back to RGB
-            let mixRGB = mixCMY.map(v => 255 - v);
+            if (isRedBlue) {
+                // Purple Mix: We MUST kill Yellow.
+                // Red pigment has Yellow (Orange-ish). Blue pigment has Cyan.
+                // Red + Blue = Violet. Any Yellow turns it Brown.
+                // Apply severe reduction to Yellow channel.
+                mixCMY[2] *= 0.2; // Yellow Kill
+                
+                // Boost Cyan and Magenta slightly to retain vibrancy
+                mixCMY[0] *= 1.15;
+                mixCMY[1] *= 1.15;
+            } 
+            else if (isBlueYellow) {
+                // Green Mix: We MUST kill Magenta.
+                // Blue pigment has Magenta (Red-ish). Yellow pigment has Red.
+                // Blue + Yellow = Green. Any Magenta turns it Olive/Grey.
+                mixCMY[1] *= 0.3; // Magenta Kill
+                
+                // Boost Cyan and Yellow
+                mixCMY[0] *= 1.1;
+                mixCMY[2] *= 1.1;
+            }
+            else if (isRedYellow) {
+                // Orange Mix: We MUST kill Cyan.
+                mixCMY[0] *= 0.2; // Cyan Kill
+            }
+
+            // 5. Convert back to RGB
+            let mixRGB = mixCMY.map(v => (1 - Math.min(1, v)) * 255);
             
-            // Apply Water (Alpha Blending with White)
-            mixRGB = mixRGB.map(v => {
-                return Math.min(255, Math.max(0, v * (1 - water) + 255 * water));
-            });
+            // 6. Final Vibrance Check
+            // If the result is too dark but inputs were bright (e.g. Cobalt + Pyrrole), lift it
+            const resHsv = rgbToHsv(mixRGB[0], mixRGB[1], mixRGB[2]);
+            if (resHsv.v < 0.3 && (hsvA.v > 0.5 && hsvB.v > 0.5)) {
+                 mixRGB = hsvToRgb(resHsv.h, resHsv.s, resHsv.v * 1.5);
+            }
+
+            // 7. Apply Water
+            mixRGB = mixRGB.map(v => v * (1 - water) + 255 * water);
             
             return mixRGB;
         }
 
-        // --- 標準工具函式 ---
+        function rgbToHsv(r, g, b) {
+            r /= 255, g /= 255, b /= 255;
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var h, s, v = max;
+            var d = max - min;
+            s = max == 0 ? 0 : d / max;
+            if (max == min) { h = 0; } 
+            else {
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            if (h < 0) h += 1;
+            return { h: h * 360, s: s, v: v };
+        }
+        
+        function hsvToRgb(h, s, v) {
+            var r, g, b;
+            var i = Math.floor(h / 60);
+            var f = h / 60 - i;
+            var p = v * (1 - s);
+            var q = v * (1 - f * s);
+            var t = v * (1 - (1 - f) * s);
+            switch (i % 6) {
+                case 0: r = v, g = t, b = p; break;
+                case 1: r = q, g = v, b = p; break;
+                case 2: r = p, g = v, b = t; break;
+                case 3: r = p, g = q, b = v; break;
+                case 4: r = t, g = p, b = v; break;
+                case 5: r = v, g = p, b = q; break;
+            }
+            return [r * 255, g * 255, b * 255];
+        }
+
         function hexToRgb(hex) {
             return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
         }
         function rgbToHex(rgb) {
             return "#" + rgb.map(x => {
-                const hex = Math.round(x).toString(16);
+                x = Math.round(x);
+                x = Math.max(0, Math.min(255, x));
+                const hex = x.toString(16);
                 return hex.length === 1 ? '0' + hex : hex;
             }).join('');
         }
@@ -748,7 +873,6 @@
             }
         }
 
-        // --- 逆向推演 (嚴格執行三層架構顯示) ---
         function runReverse() {
             const data = DB[currentBrand].data;
             const targetIdx = document.getElementById('selTarget').value;
@@ -760,14 +884,13 @@
             listContainer.innerHTML = "";
             
             let recipes = [];
-            // Simplified loop for performance
             for(let i=0; i<data.length; i++) {
                 if(i == targetIdx) continue;
                 for(let j=i+1; j<data.length; j++) {
                     if(j == targetIdx) continue;
                     if(data[i].g === data[j].g) continue;
                     
-                    const mRGB = mixColorsSubtractive(data[i].h, data[j].h, 0);
+                    const mRGB = mixColorsPhysics(data[i].h, data[j].h, 0);
                     const dist = colorDist(mRGB, targetRGB);
                     if(dist < 50) { 
                         recipes.push({c1: data[i], c2: data[j], dist: dist, hex: rgbToHex(mRGB)});
@@ -793,32 +916,25 @@
                                 <div class="mini-circle" style="background:${r.c1.h}"></div>
                                 <div class="mini-label-c">${r.c1.c}</div>
                                 <div class="mini-label-z">${r.c1.z}</div>
-                                <div class="mini-label-e">${r.c1.e}</div>
                             </div>
-                            
                             <div class="math-symbol">+</div>
-                            
                             <div class="mini-swatch-col">
                                 <div class="mini-circle" style="background:${r.c2.h}"></div>
                                 <div class="mini-label-c">${r.c2.c}</div>
                                 <div class="mini-label-z">${r.c2.z}</div>
-                                <div class="mini-label-e">${r.c2.e}</div>
                             </div>
-                            
                             <div class="math-symbol">=</div>
-                            
                             <div class="mini-swatch-col">
                                 <div class="mini-circle" style="background:${r.hex}; border: 3px solid ${targetItem.h};"></div>
                                 <div class="mini-label-c">MIX</div>
                                 <div class="mini-label-z" style="font-weight:bold;">Result</div>
-                                <div class="mini-label-e">Simulation</div>
                             </div>
                         </div>
                     `;
                     listContainer.appendChild(div);
                 });
             } else {
-                listContainer.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">No matching mix found.<br>找不到接近的配方。</div>`;
+                listContainer.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">No precise match found.</div>`;
             }
         }
 
@@ -826,5 +942,3 @@
     </script>
 </body>
 </html>
-
-
