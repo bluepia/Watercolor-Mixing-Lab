@@ -5,13 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>全球專家級水彩顏料資料庫｜色號、Pigment Code、系列等級完整對照</title>
-    <meta name="title" content="專家級水彩顏料資料庫｜色號、Pigment Code、系列等級完整對照">
     <meta name="description" content="整理 Winsor & Newton、Holbein、Schmincke、Rembrandt、Sennelier、MIJELLO 等專家級水彩顏料色號、Pigment Code 與系列等級，打造完整水彩顏料學研究資料庫與調色指南。">
-    <meta name="keywords" content="水彩顏料資料表, 專家級水彩顏料, Winsor & Newton 顏料色號, Holbein 水彩色號, Schmincke 水彩色號, Rembrandt 水彩色號, Sennelier 水彩色號, MIJELLO 水彩色號, 水彩 Pigment Code 對照表, 水彩顏料學研究, 水彩調色資料庫">
-    
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="全球專家級水彩顏料資料庫｜色號、Pigment Code、系列等級完整對照">
-    <meta property="og:description" content="整理 Winsor & Newton、Holbein、Schmincke、Rembrandt、Sennelier、MIJELLO 等專家級水彩顏料色號、Pigment Code 與系列等級。">
+    <meta name="keywords" content="水彩顏料資料表, 專家級水彩顏料, Winsor & Newton 顏料色號, Holbein 水彩色號, Schmincke, Rembrandt, Sennelier, MIJELLO, Pigment Code">
 
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -118,20 +113,21 @@
             padding: 15px; border-radius: 8px; line-height: 1.6;
         }
 
+        /* Footer Copyright */
         .footer-copyright {
-    margin-top: 30px; 
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-    text-align: center;
-    color: #999;
-    font-family: sans-serif;
-    line-height: 1.5;
-}
+            margin-top: 30px; 
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #999;
+            font-family: sans-serif;
+            line-height: 1.5;
+        }
 
-.footer-copyright p {
-    margin: 0;
-    font-size: 0.65rem;
-}
+        .footer-copyright p {
+            margin: 0;
+            font-size: 0.65rem;
+        }
 
         /* --- 4. 主內容區 --- */
         main { padding: 40px; }
@@ -232,16 +228,15 @@
 
         <div class="guide">
             <strong>🎯 視覺比對 + Pigment Code</strong><br>
-            系統由Google Gemini AI模擬，採用 RGB 歐幾里得距離演算法。點擊任何色塊，即時搜尋各品牌中「看起來最像」的顏色，幫助您打破品牌限制，找到最佳替代色。點擊右側色塊，系統將計算 RGB 視覺近似色，並列出 TOP 5 相近色的完整編號與色粉代碼 (Pigment Code)。
+            點擊右側色塊，系統將計算 RGB 視覺近似色，並列出 TOP 5 相近色的完整編號與色粉代碼 (Pigment Code)，供您精準參考。
         </div>
 
         <div class="footer-copyright">
-    <p>&copy; 2026 Watercolor Mixing Lab by BLUEPIA | Optimized for Artists</p>
-    <p style="opacity: 0.6; margin-top: 5px; font-size: 0.6rem;">
-        Disclaimer: This website is powered by AI simulation. Colors are for visual reference only.<br>
-        本站色票經 AI 模擬運算，螢幕顯示僅供參考，實際顏色請以各品牌實品為準。
-    </p>
-</div>
+            <p>&copy; 2026 Watercolor Mixing Lab by BLUEPIA | Optimized for Artists</p>
+            <p style="opacity: 0.6; margin-top: 5px;">
+                Disclaimer: 本站色票經 AI 模擬運算，螢幕顯示僅供參考，實際顏色請以各品牌實品為準。
+            </p>
+        </div>
     </aside>
 
     <main>
@@ -288,8 +283,7 @@
         'mijello': 'Mijello Mission Gold'
     };
 
-    // --- 1. 完整資料庫 (包含 Pigment Code) ---
-    // p: Pigment Code
+    // --- 1. 完整資料庫 (Updated Sennelier) ---
     const db = [
         // === W&N ===
         {b:'wn', i:'010', nC:'溫莎檸檬黃', nE:'Winsor Lemon', f:'Yellow', p:'PY175', h:'#F4E846'},
@@ -462,61 +456,119 @@
         {b:'schmincke', i:'351', nC:'綠土', nE:'Terre Verte', f:'Mineral', p:'PG23', h:'#3B7A57'},
         {b:'schmincke', i:'352', nC:'鈷松石', nE:'Cobalt Turquoise', f:'Mineral', p:'PB36', h:'#00CED1'},
 
-        // === Sennelier ===
-        {b:'sennelier', i:'501', nC:'檸檬黃', nE:'Lemon Yellow', f:'Yellow', p:'PY175', h:'#F4ED50'},
-        {b:'sennelier', i:'502', nC:'基本黃', nE:'Primary Yellow', f:'Yellow', p:'PY154', h:'#FFD700'},
-        {b:'sennelier', i:'503', nC:'印度黃', nE:'Indian Yellow', f:'Yellow', p:'PY153', h:'#FFB300'},
-        {b:'sennelier', i:'504', nC:'鎘檸檬黃', nE:'Cadmium Yellow Lemon', f:'Yellow', p:'PY35', h:'#F7E949'},
-        {b:'sennelier', i:'505', nC:'鎘黃中', nE:'Cadmium Yellow Medium', f:'Yellow', p:'PY35', h:'#FFCC00'},
-        {b:'sennelier', i:'506', nC:'鎘黃深', nE:'Cadmium Yellow Deep', f:'Yellow', p:'PY35', h:'#FFB800'},
-        {b:'sennelier', i:'507', nC:'拿坡里黃', nE:'Naples Yellow', f:'Yellow', p:'PBr24', h:'#FADA5E'},
-        {b:'sennelier', i:'508', nC:'黃赭', nE:'Yellow Ochre', f:'Yellow', p:'PY43', h:'#CC7722'},
-        {b:'sennelier', i:'509', nC:'生赭', nE:'Raw Sienna', f:'Yellow', p:'PY42', h:'#D27D46'},
-        {b:'sennelier', i:'520', nC:'鎘橙', nE:'Cadmium Orange', f:'Orange', p:'PO20', h:'#FF7F00'},
-        {b:'sennelier', i:'521', nC:'吡咯橙', nE:'Pyrrole Orange', f:'Orange', p:'PO73', h:'#FF681F'},
-        {b:'sennelier', i:'522', nC:'透明橙', nE:'Transparent Orange', f:'Orange', p:'PO71', h:'#E86A17'},
-        {b:'sennelier', i:'530', nC:'基本紅', nE:'Primary Red', f:'Red', p:'PR254', h:'#E32636'},
-        {b:'sennelier', i:'531', nC:'朱紅仿', nE:'Vermilion Hue', f:'Red', p:'PR254', h:'#E34234'},
-        {b:'sennelier', i:'532', nC:'永久玫瑰紅', nE:'Permanent Rose', f:'Red', p:'PV19', h:'#E0115F'},
-        {b:'sennelier', i:'533', nC:'喹吖啶洋紅', nE:'Quinacridone Magenta', f:'Red', p:'PR122', h:'#FF0090'},
-        {b:'sennelier', i:'534', nC:'喹吖啶紅', nE:'Quinacridone Red', f:'Red', p:'PR209', h:'#DC143C'},
-        {b:'sennelier', i:'535', nC:'胭脂紅', nE:'Carmine', f:'Red', p:'PR176', h:'#960018'},
-        {b:'sennelier', i:'536', nC:'茜素深紅', nE:'Alizarin Crimson', f:'Red', p:'PR83', h:'#A52A2A'},
-        {b:'sennelier', i:'537', nC:'紫栗紅', nE:'Perylene Maroon', f:'Red', p:'PR179', h:'#800000'},
-        {b:'sennelier', i:'550', nC:'二氧雜蒽紫', nE:'Dioxazine Violet', f:'Violet', p:'PV23', h:'#8F00FF'},
-        {b:'sennelier', i:'551', nC:'鈷紫', nE:'Cobalt Violet', f:'Violet', p:'PV14', h:'#9400D3'},
-        {b:'sennelier', i:'552', nC:'錳紫', nE:'Manganese Violet', f:'Violet', p:'PV16', h:'#6C3082'},
-        {b:'sennelier', i:'560', nC:'群青', nE:'Ultramarine Blue', f:'Blue', p:'PB29', h:'#120A8F'},
-        {b:'sennelier', i:'561', nC:'法國群青', nE:'French Ultramarine', f:'Blue', p:'PB29', h:'#1C3893'},
-        {b:'sennelier', i:'562', nC:'鈷藍', nE:'Cobalt Blue', f:'Blue', p:'PB28', h:'#0047AB'},
-        {b:'sennelier', i:'563', nC:'天藍', nE:'Cerulean Blue', f:'Blue', p:'PB35', h:'#007BA7'},
-        {b:'sennelier', i:'564', nC:'酞青藍綠相', nE:'Phthalo Blue GS', f:'Blue', p:'PB15:3', h:'#0047AB'},
-        {b:'sennelier', i:'565', nC:'酞青藍紅相', nE:'Phthalo Blue RS', f:'Blue', p:'PB15:6', h:'#000F89'},
-        {b:'sennelier', i:'566', nC:'普魯士藍', nE:'Prussian Blue', f:'Blue', p:'PB27', h:'#003153'},
-        {b:'sennelier', i:'567', nC:'靛藍', nE:'Indigo', f:'Blue', p:'PB60', h:'#002FA7'},
-        {b:'sennelier', i:'580', nC:'維里第綠', nE:'Viridian', f:'Green', p:'PG18', h:'#40826D'},
-        {b:'sennelier', i:'581', nC:'酞青綠', nE:'Phthalo Green', f:'Green', p:'PG7', h:'#00A550'},
-        {b:'sennelier', i:'582', nC:'胡克綠', nE:'Hooker’s Green', f:'Green', p:'PG7, PY110', h:'#49796B'},
-        {b:'sennelier', i:'583', nC:'樹液綠', nE:'Sap Green', f:'Green', p:'PG7, PY110', h:'#507D2A'},
-        {b:'sennelier', i:'584', nC:'橄欖綠', nE:'Olive Green', f:'Green', p:'PG36, PBr7', h:'#808000'},
-        {b:'sennelier', i:'585', nC:'綠金', nE:'Green Gold', f:'Green', p:'PY129', h:'#A8C946'},
-        {b:'sennelier', i:'600', nC:'熟赭', nE:'Burnt Sienna', f:'Earth', p:'PR101', h:'#E97451'},
-        {b:'sennelier', i:'601', nC:'熟褐', nE:'Burnt Umber', f:'Earth', p:'PBr7', h:'#8A3324'},
-        {b:'sennelier', i:'602', nC:'生褐', nE:'Raw Umber', f:'Earth', p:'PBr7', h:'#826644'},
-        {b:'sennelier', i:'603', nC:'凡戴克褐', nE:'Vandyke Brown', f:'Earth', p:'PBr7', h:'#664228'},
-        {b:'sennelier', i:'604', nC:'墨褐', nE:'Sepia', f:'Earth', p:'PBr7', h:'#704214'},
-        {b:'sennelier', i:'605', nC:'淺紅', nE:'Light Red', f:'Earth', p:'PR101', h:'#F88379'},
-        {b:'sennelier', i:'620', nC:'佩恩灰', nE:'Payne’s Grey', f:'Grey', p:'PB29, PBk7', h:'#536878'},
-        {b:'sennelier', i:'621', nC:'中性灰', nE:'Neutral Tint', f:'Grey', p:'PB29, PBk7, PR101', h:'#777B7E'},
-        {b:'sennelier', i:'622', nC:'象牙黑', nE:'Ivory Black', f:'Grey', p:'PBk9', h:'#292421'},
-        {b:'sennelier', i:'623', nC:'煤黑', nE:'Lamp Black', f:'Grey', p:'PBk7', h:'#121212'},
-        {b:'sennelier', i:'630', nC:'中國白', nE:'Chinese White', f:'White', p:'PW4', h:'#F8F9FA'},
-        {b:'sennelier', i:'631', nC:'鈦白', nE:'Titanium White', f:'White', p:'PW6', h:'#FFFFFF'},
-        {b:'sennelier', i:'650', nC:'深拿坡里黃', nE:'Naples Yellow Deep', f:'Mineral', p:'PBr24', h:'#E3C062'},
-        {b:'sennelier', i:'651', nC:'陶工粉', nE:'Potter’s Pink', f:'Mineral', p:'PR233', h:'#E4A0A0'},
-        {b:'sennelier', i:'652', nC:'綠土', nE:'Terre Verte', f:'Mineral', p:'PG23', h:'#3B7A57'},
+        // === Sennelier (Updated) ===
+        // Yellow
+        {b:'sennelier', i:'574', nC:'原色黃', nE:'Primary Yellow', f:'Yellow', p:'PY74', h:'#FDE910'},
+        {b:'sennelier', i:'587', nC:'蘇菲黃', nE:'Yellow Sophie', f:'Yellow', p:'PY153', h:'#F8D523'},
+        {b:'sennelier', i:'501', nC:'檸檬黃', nE:'Lemon Yellow', f:'Yellow', p:'PY3', h:'#F4ED50'},
+        {b:'sennelier', i:'559', nC:'鉻黃 (奧瑞林黃)', nE:'Aureoline', f:'Yellow', p:'PY40', h:'#FDEE00'},
+        {b:'sennelier', i:'517', nC:'印度黃', nE:'Indian Yellow', f:'Yellow', p:'PY154', h:'#FFB300'},
+        {b:'sennelier', i:'576', nC:'鎳黃', nE:'Nickel Yellow', f:'Yellow', p:'PY150', h:'#E6A817'},
+        {b:'sennelier', i:'578', nC:'申內利爾淡黃', nE:'Sennelier Yellow Light', f:'Yellow', p:'PY153', h:'#FFEC00'},
+        {b:'sennelier', i:'561', nC:'湖黃', nE:'Yellow Lake', f:'Yellow', p:'PY83', h:'#FFD700'},
+        {b:'sennelier', i:'567', nC:'那不勒斯黃', nE:'Naples Yellow', f:'Yellow', p:'PY41', h:'#FADA5E'},
+        {b:'sennelier', i:'566', nC:'深那不勒斯黃', nE:'Naples Yellow Deep', f:'Yellow', p:'PY41', h:'#E3C062'},
+        {b:'sennelier', i:'579', nC:'申內利爾深黃', nE:'Sennelier Yellow Deep', f:'Yellow', p:'PY83', h:'#FFC300'},
+        {b:'sennelier', i:'535', nC:'鎘檸檬黃', nE:'Cadmium Lemon Yellow', f:'Yellow', p:'PY35', h:'#F7E949'},
+        {b:'sennelier', i:'529', nC:'鎘黃淡', nE:'Cadmium Yellow Light', f:'Yellow', p:'PY35', h:'#FFF44F'},
+        {b:'sennelier', i:'533', nC:'鎘黃深', nE:'Cadmium Yellow Deep', f:'Yellow', p:'PY35', h:'#FFB800'},
+        {b:'sennelier', i:'537', nC:'鎘橙黃', nE:'Cadmium Yellow Orange', f:'Yellow', p:'PO20', h:'#FFA500'},
+        // Orange
+        {b:'sennelier', i:'641', nC:'申內利爾橙', nE:'Sennelier Orange', f:'Orange', p:'PO73', h:'#FF7F00'},
+        {b:'sennelier', i:'640', nC:'紅橙', nE:'Red Orange', f:'Orange', p:'PO62', h:'#FF4500'},
+        {b:'sennelier', i:'645', nC:'中國橙', nE:'Chinese Orange', f:'Orange', p:'PO20', h:'#E86A17'},
+        // Red
+        {b:'sennelier', i:'619', nC:'亮紅', nE:'Bright Red', f:'Red', p:'PR3', h:'#EE204D'},
+        {b:'sennelier', i:'636', nC:'申內利爾紅', nE:'Sennelier Red', f:'Red', p:'PR170', h:'#E32636'},
+        {b:'sennelier', i:'605', nC:'鎘紅淡', nE:'Cadmium Red Light', f:'Red', p:'PR108', h:'#FF0000'},
+        {b:'sennelier', i:'611', nC:'鎘紅紫', nE:'Cadmium Red Purple', f:'Red', p:'PR108', h:'#8B0000'},
+        {b:'sennelier', i:'612', nC:'猩紅', nE:'Scarlet Laquer', f:'Red', p:'PR170', h:'#FF2400'},
+        {b:'sennelier', i:'623', nC:'威尼斯紅', nE:'Venetian Red', f:'Red', p:'PR101', h:'#C80815'},
+        {b:'sennelier', i:'675', nC:'法國朱紅', nE:'French Vermillion', f:'Red', p:'PR242', h:'#E34234'},
+        {b:'sennelier', i:'679', nC:'喹吖啶紅', nE:'Quinacridone Red', f:'Red', p:'PR209', h:'#DC143C'},
+        {b:'sennelier', i:'635', nC:'胭脂紅', nE:'Carmine', f:'Red', p:'PR176', h:'#960018'},
+        {b:'sennelier', i:'689', nC:'茜素紅', nE:'Alizarin Crimson', f:'Red', p:'PR209, PY83, PR179', h:'#A52A2A'},
+        {b:'sennelier', i:'699', nC:'永久深茜素', nE:'Perm. Alizarin Crimson Deep', f:'Red', p:'PR264', h:'#800000'},
+        {b:'sennelier', i:'688', nC:'湖紅', nE:'Crimson Lake', f:'Red', p:'PR179', h:'#990000'},
+        {b:'sennelier', i:'659', nC:'歌劇玫瑰', nE:'Opera Rose', f:'Red', p:'PR122', h:'#FF0090'},
+        {b:'sennelier', i:'680', nC:'永久洋紅', nE:'Permanent Magenta', f:'Red', p:'PR122', h:'#FF00FF'},
+        // Violet
+        {b:'sennelier', i:'671', nC:'太陽紫', nE:'Helios Purple', f:'Violet', p:'PR122', h:'#C71585'},
+        {b:'sennelier', i:'917', nC:'二氧化紫', nE:'Dioxazine Purple', f:'Violet', p:'PV23', h:'#8F00FF'},
+        {b:'sennelier', i:'903', nC:'藍紫', nE:'Blue Violet', f:'Violet', p:'PV23', h:'#8A2BE2'},
+        {b:'sennelier', i:'905', nC:'紅紫', nE:'Red Violet', f:'Violet', p:'PV19', h:'#C71585'},
+        {b:'sennelier', i:'911', nC:'鈷紫淡色仿色', nE:'Cobalt Violet Light Hue', f:'Violet', p:'PV16', h:'#D8BFD8'},
+        {b:'sennelier', i:'913', nC:'鈷紫深色仿色', nE:'Cobalt Violet Deep Hue', f:'Violet', p:'PV16', h:'#9400D3'},
+        // Blue
+        {b:'sennelier', i:'399', nC:'申內利爾藍', nE:'Blue Sennelier', f:'Blue', p:'PB15', h:'#0047AB'},
+        {b:'sennelier', i:'302', nC:'天藍', nE:'Cerulean Blue', f:'Blue', p:'PB35', h:'#007BA7'},
+        {b:'sennelier', i:'305', nC:'偏紅天藍', nE:'Cerulean Blue Red Shade', f:'Blue', p:'PB35', h:'#2A52BE'},
+        {b:'sennelier', i:'307', nC:'鈷藍', nE:'Cobalt Blue', f:'Blue', p:'PB28', h:'#0047AB'},
+        {b:'sennelier', i:'309', nC:'鈷深藍', nE:'Cobalt Deep', f:'Blue', p:'PB28', h:'#000080'},
+        {b:'sennelier', i:'312', nC:'群青淡', nE:'Ultramarine Light', f:'Blue', p:'PB29', h:'#4169E1'},
+        {b:'sennelier', i:'314', nC:'法國群青', nE:'French Ultramarine Blue', f:'Blue', p:'PB29', h:'#120A8F'},
+        {b:'sennelier', i:'315', nC:'群青深', nE:'Ultramarine Deep', f:'Blue', p:'PB29', h:'#0A0060'},
+        {b:'sennelier', i:'308', nC:'靛藍', nE:'Indigo', f:'Blue', p:'PB15, PB29', h:'#4B0082'},
+        {b:'sennelier', i:'318', nC:'普魯士藍', nE:'Prussian Blue', f:'Blue', p:'PB27', h:'#003153'},
+        {b:'sennelier', i:'326', nC:'酞菁藍', nE:'Phthalocyanine Blue', f:'Blue', p:'PB15', h:'#000F89'},
+        {b:'sennelier', i:'341', nC:'酞菁藍綠', nE:'Phthalocyanine Turquoise', f:'Blue', p:'PB15, PG7', h:'#00CED1'},
+        {b:'sennelier', i:'344', nC:'灰藍', nE:'Cinereous Blue', f:'Blue', p:'PB15, PW4', h:'#6699CC'},
+        {b:'sennelier', i:'322', nC:'皇家藍', nE:'Royal Blue', f:'Blue', p:'PB29', h:'#4169E1'},
+        // Green
+        {b:'sennelier', i:'805', nC:'酞菁綠淡', nE:'Phthalo Green Light', f:'Green', p:'PG7', h:'#00A550'},
+        {b:'sennelier', i:'807', nC:'酞菁綠深', nE:'Phthalo Green Deep', f:'Green', p:'PG7', h:'#006400'},
+        {b:'sennelier', i:'809', nC:'霍克綠', nE:'Hooker’s Green', f:'Green', p:'PG36', h:'#49796B'},
+        {b:'sennelier', i:'813', nC:'橄欖綠', nE:'Olive Green', f:'Green', p:'PG36', h:'#808000'},
+        {b:'sennelier', i:'815', nC:'鉻氧化綠', nE:'Chromium Oxide Green', f:'Green', p:'PG17', h:'#2E8B57'},
+        {b:'sennelier', i:'817', nC:'申內利爾綠', nE:'Sennelier Green', f:'Green', p:'PG7', h:'#009E60'},
+        {b:'sennelier', i:'819', nC:'樹汁綠', nE:'Sap Green', f:'Green', p:'PG36', h:'#507D2A'},
+        {b:'sennelier', i:'823', nC:'鎘綠淡', nE:'Cadmium Green Light', f:'Green', p:'PG36', h:'#90EE90'},
+        {b:'sennelier', i:'837', nC:'鈷綠', nE:'Viridian Green', f:'Green', p:'PG18', h:'#40826D'},
+        {b:'sennelier', i:'843', nC:'松石綠', nE:'Turquoise Green', f:'Green', p:'PG50', h:'#00CED1'},
+        {b:'sennelier', i:'847', nC:'翠綠', nE:'Emerald Green', f:'Green', p:'PG7', h:'#50C878'},
+        {b:'sennelier', i:'856', nC:'鈷綠', nE:'Cobalt Green', f:'Green', p:'PG50', h:'#00A693'},
+        {b:'sennelier', i:'857', nC:'棕綠', nE:'Brown Green', f:'Green', p:'PG36', h:'#556B2F'},
+        {b:'sennelier', i:'871', nC:'亮黃綠', nE:'Bright Yellow Green', f:'Green', p:'PG7', h:'#ADFF2F'},
+        {b:'sennelier', i:'899', nC:'森林綠', nE:'Forest Green', f:'Green', p:'PG36', h:'#228B22'},
+        // Earth
+        {b:'sennelier', i:'252', nC:'黃土', nE:'Yellow Ochre', f:'Earth', p:'PY43', h:'#CC7722'},
+        {b:'sennelier', i:'254', nC:'淡黃土', nE:'Light Yellow Ochre', f:'Earth', p:'PY43', h:'#EEDC82'},
+        {b:'sennelier', i:'257', nC:'金赭', nE:'Gold Ochre', f:'Earth', p:'PY43', h:'#C59A47'},
+        {b:'sennelier', i:'565', nC:'法國赭', nE:'French Ochre', f:'Earth', p:'PY43', h:'#DAA520'},
+        {b:'sennelier', i:'208', nC:'生赭', nE:'Raw Sienna', f:'Earth', p:'PBr7', h:'#D27D46'},
+        {b:'sennelier', i:'211', nC:'熟赭', nE:'Burnt Sienna', f:'Earth', p:'PBr7', h:'#E97451'},
+        {b:'sennelier', i:'205', nC:'生棕', nE:'Raw Umber', f:'Earth', p:'PBr7', h:'#826644'},
+        {b:'sennelier', i:'202', nC:'熟棕', nE:'Burnt Umber', f:'Earth', p:'PBr7', h:'#8A3324'},
+        {b:'sennelier', i:'203', nC:'綠棕', nE:'Greenish Umber', f:'Earth', p:'PBr7', h:'#736C5A'},
+        {b:'sennelier', i:'213', nC:'綠土', nE:'Green Earth', f:'Earth', p:'PG23', h:'#3B7A57'},
+        {b:'sennelier', i:'407', nC:'凡戴克棕', nE:'Van Dyck Brown', f:'Earth', p:'PBr7', h:'#664228'},
+        {b:'sennelier', i:'435', nC:'透明棕', nE:'Transparent Brown', f:'Earth', p:'PR101', h:'#A52A2A'},
+        {b:'sennelier', i:'440', nC:'暖褐', nE:'Warm Sepia', f:'Earth', p:'PBr7', h:'#704214'},
+        {b:'sennelier', i:'443', nC:'生褐', nE:'Raw Sepia', f:'Earth', p:'PBr7', h:'#5E2612'},
+        {b:'sennelier', i:'445', nC:'棕粉', nE:'Brown Pink', f:'Earth', p:'PR101', h:'#C4989E'},
+        {b:'sennelier', i:'499', nC:'苝烯棕', nE:'Perylene Brown', f:'Earth', p:'PBr25', h:'#8B4513'},
+        // Black/Grey/White
+        {b:'sennelier', i:'112', nC:'中國白', nE:'Chinese White', f:'White', p:'PW4', h:'#F8F9FA'},
+        {b:'sennelier', i:'116', nC:'鈦白', nE:'Titanium White', f:'White', p:'PW6', h:'#FFFFFF'},
+        {b:'sennelier', i:'703', nC:'佩恩灰', nE:'Payne’s Grey', f:'Grey', p:'PB29, PBk7', h:'#536878'},
+        {b:'sennelier', i:'707', nC:'淡灰', nE:'Light Grey', f:'Grey', p:'PB29, PW4', h:'#D3D3D3'},
+        {b:'sennelier', i:'709', nC:'申內利爾灰', nE:'Sennelier Grey', f:'Grey', p:'PB29, PBk7', h:'#708090'},
+        {b:'sennelier', i:'705', nC:'暖灰', nE:'Warm Grey', f:'Grey', p:'PB29, PBr7', h:'#A9A9A9'},
+        {b:'sennelier', i:'753', nC:'煙黑', nE:'Lamp Black', f:'Black', p:'PBk6', h:'#121212'},
+        {b:'sennelier', i:'755', nC:'象牙黑', nE:'Ivory Black', f:'Black', p:'PBk9', h:'#292421'},
+        {b:'sennelier', i:'931', nC:'中性灰', nE:'Neutral Tint', f:'Grey', p:'PB29, PBk6', h:'#777B7E'},
+        // Iridescent (Special)
+        {b:'sennelier', i:'028', nC:'珠光金', nE:'Iridescent Gold', f:'Special', p:'PG17', h:'#D4AF37'},
+        {b:'sennelier', i:'029', nC:'珠光銀', nE:'Iridescent Silver', f:'Special', p:'PB19', h:'#C0C0C0'},
+        {b:'sennelier', i:'030', nC:'珠光銅', nE:'Iridescent Copper', f:'Special', p:'PB19', h:'#B87333'},
+        {b:'sennelier', i:'054', nC:'珠光黃', nE:'Iridescent Yellow', f:'Special', p:'PG17', h:'#FFFFE0'},
+        {b:'sennelier', i:'060', nC:'珠光橙', nE:'Iridescent Orange', f:'Special', p:'PG17', h:'#FFDAB9'},
+        {b:'sennelier', i:'061', nC:'珠光朱紅', nE:'Iridescent Vermillion', f:'Special', p:'PG17', h:'#E9967A'},
+        {b:'sennelier', i:'090', nC:'珠光紫', nE:'Iridescent Purple', f:'Special', p:'PB19', h:'#E6E6FA'},
+        {b:'sennelier', i:'038', nC:'珠光藍', nE:'Iridescent Phthalo Blue', f:'Special', p:'PB19', h:'#ADD8E6'},
+        {b:'sennelier', i:'080', nC:'珠光綠', nE:'Iridescent Green', f:'Special', p:'PG17', h:'#90EE90'},
 
-        // === Rembrandt (補上 Pigment Code，基於專家級常規) ===
+        // === Rembrandt ===
         {b:'rembrandt', i:'106', nC:'不透明白', nE:'Opaque White', f:'White', p:'PW6', h:'#FFFFFF'},
         {b:'rembrandt', i:'108', nC:'中國白', nE:'Chinese White', f:'White', p:'PW4', h:'#F8F9FA'},
         {b:'rembrandt', i:'112', nC:'透明鈦白', nE:'Transp. Titanium White', f:'White', p:'PW6', h:'#FCFCFC'},
